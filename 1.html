@@ -6,6 +6,7 @@
     <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
     <!-- End Adobe Launch -->
 
+
 </head>
 
 <body>
@@ -13,7 +14,53 @@
     <h1>Happy Kensho Site</h1>
 
     <p>Happy.Happy.Happy</p>
+    <p>あいうえお</p>
+    <p>abcde</p>
 
-</body>
+    <!DOCTYPE html>
+    <html lang="ja">
 
-</html>
+    <head>
+        <meta charset="UTF-8">
+        <title>User Agent の取得サンプル</title>
+    </head>
+
+    <body>
+        <p id="ua"></p>
+        <script>
+            const ua = navigator.userAgent;
+            document.getElementById('ua').textContent = `あなたの User Agent は ${ua}`;
+        </script>
+
+        <!DOCTYPE html>
+        <html lang="ja">
+
+        <!DOCTYPE html>
+        <html lang="ja">
+
+        <head>
+            <meta charset="UTF-8">
+            <title>Dogecoin ロゴ埋め込みサンプル</title>
+        </head>
+
+        <body>
+            <h1>Dogecoin ロゴとボタン</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png" alt="Dogecoin Logo" width="200">
+            <br>
+            <button id="myButton">クリックしてね！</button>
+            <p>クリック回数：<span id="count">0</span></p>
+            <script>
+                let count = 0;
+                document.getElementById('myButton').addEventListener('click', function () {
+                    count++;
+                    document.getElementById('count').textContent = count;
+                });
+            </script>
+
+            <a href="/2.html">
+                <img src="https://sato-icons.com/wp/wp-content/uploads/2020/10/%E6%AC%A1%E3%81%AB%E9%80%B2%E3%82%80%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B36.png"
+                    width="50" alt="次に進むアイコン">
+            </a>
+        </body>
+
+        </html>
