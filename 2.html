@@ -13,7 +13,77 @@
     <h1>Happy Kensho Site2</h1>
 
     <p>Happy.Happy.Happy2</p>
+    <!DOCTYPE html>
+    <html lang="ja">
 
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>JSTとUTCの時刻表示</title>
+    </head>
 
-</html>
+    <body>
+        <h1>現在時刻</h1>
+        <p>JST（日本標準時）: <span id="jst"></span></p>
+        <p>UTC: <span id="utc"></span></p>
+        <script>
+            function updateClocks() {
+                // 現在の日時を取得（ローカル時刻）
+                const now = new Date();
+
+                // JST（日本標準時）は UTC+9
+                // toLocaleString で日本時間として表示
+                const jst = now.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+                // UTC表記
+                const utc = now.toISOString().replace('T', ' ').substring(0, 19);
+
+                document.getElementById('jst').textContent = jst;
+                document.getElementById('utc').textContent = utc + " UTC";
+            }
+
+            updateClocks(); // 初回表示
+            setInterval(updateClocks, 1000); // 1秒ごとに更新
+        </script>
+
+        <!DOCTYPE html>
+        <html lang="ja">
+
+        <head>
+            <meta charset="UTF-8">
+            <title>画像クリックで増殖！</title>
+        </head>
+
+        <body>
+            <h1>画像をクリックすると増えるよ</h1>
+            <div id="img-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/800px-Bitcoin.svg.png"
+                    alt="Bitcoinロゴ" width="100" id="bitcoin-img" style="cursor:pointer;">
+            </div>
+
+            <script>
+                const container = document.getElementById('img-container');
+                const imgSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/800px-Bitcoin.svg.png";
+
+                // 増殖させる関数
+                function addImage() {
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+                    img.alt = "Bitcoinロゴ";
+                    img.width = 100;
+                    img.style.cursor = "pointer";
+                    img.onclick = addImage; // 新しい画像にもクリックイベントを追加
+                    container.appendChild(img);
+                }
+
+                // 最初の画像にもクリックイベントを追加
+                document.getElementById('bitcoin-img').onclick = addImage;
+            </script>
+        </body>
+
+        </html>
+        <a href="/3.html">
+            <img src="https://sato-icons.com/wp/wp-content/uploads/2020/10/%E6%AC%A1%E3%81%AB%E9%80%B2%E3%82%80%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B36.png"
+                width="50" alt="次に進むアイコン">
+
+    </body>
+
+    </html>
