@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cookie 読み取りサンプル</title>
+    <!-- Adobe Launch タグ -->
+    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 1rem;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Cookie 読み取りサンプル</h1>
+    <p>以下に読み取った Cookie 情報を JSON 形式で表示します。</p>
+    <pre id="cookie-output">読み取り中...</pre>
+
+    <script>
+        // ドキュメントに設定されているすべての Cookie を文字列で取得
+        const cookieString = document.cookie;
+        // "key1=val1; key2=val2; ..." の形式からオブジェクトに変換
+        const cookies = cookieString
+            .split('; ')
+            .filter(entry => entry.includes('='))
+            .reduce((obj, entry) => {
+                const [rawKey, rawVal] = entry.split('=');
+                const key = rawKey.trim();
+                const val = decodeURIComponent(rawVal);
+                obj[key] = val;
+                return obj;
+            }, {});
+
+        // ページに出力
+        const output = document.getElementById('cookie-output');
+        if (Object.keys(cookies).length === 0) {
+            output.textContent = '取得できる Cookie がありません。';
+        } else {
+            output.textContent = JSON.stringify(cookies, null, 2);
+        }
+
+        // コンソールにも出力
+        console.log('読み取った Cookie:', cookies);
+    </script>
+</body>
+
+</html>
