@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ログインページ</title>
+    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 2em;
+        }
+
+        label {
+            display: block;
+            margin-top: 1em;
+        }
+
+        input {
+            padding: 0.5em;
+            width: 200px;
+        }
+
+        button {
+            margin-top: 1.5em;
+            padding: 0.5em 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ログイン</h1>
+    <form id="loginForm">
+        <label for="userid">ID：</label>
+        <input type="text" id="userid" name="userid" required>
+        <label for="password">パスワード：</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">ログイン</button>
+    </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var id = document.getElementById('userid').value;
+            var pw = document.getElementById('password').value;
+            if (id === 'test' && pw === 'test') {
+                // 認証OKならセッションにフラグをセットして home.html へ遷移
+                sessionStorage.setItem('authenticated', 'true');
+                window.location.href = 'home.html';
+            } else {
+                alert('IDまたはパスワードが正しくありません。');
+            }
+        });
+    </script>
+</body>
+
+</html>

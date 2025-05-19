@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ようこそ</title>
+    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 2em;
+        }
+
+        h1 {
+            color: #2a7ae2;
+        }
+    </style>
+    <script>
+        // ページ読み込み時に認証フラグをチェック
+        if (sessionStorage.getItem('authenticated') !== 'true') {
+            // フラグなしならログインページへリダイレクト
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+
+<body>
+    <h1>ログイン成功！</h1>
+    <p>ようこそ、テストユーザーさん。</p>
+    <p>ここがログイン後のページです。</p>
+</body>
+
+</html>
