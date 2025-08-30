@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Adobe PDF Embed API Playground</title>
+    <!-- Adobe Launch -->
+    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <style>
+        :root {
+            --bg: #0f172a;
+            /* slate-900 */
+            --panel: #111827;
+            /* gray-900 */
+            --muted: #94a3b8;
+            /* slate-400 */
+            --text: #e5e7eb;
+            /* gray-200 */
+            --accent: #22d3ee;
+            /* cyan-400 */
+            --accent-2: #a78bfa;
+            /* violet-400 */
+            --ring: rgba(34, 211, 238, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: radial-gradient(1200px 600px at 10% 0%, rgba(167, 139, 250, .15), transparent 60%),
+                radial-gradient(1200px 600px at 90% 0%, rgba(34, 211, 238, .12), transparent 60%),
+                var(--bg);
+            display: grid;
+            grid-template-rows: auto 1fr;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: 18px;
+            margin: 0;
+            letter-spacing: .2px;
+        }
+
+        header .hint {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .badge {
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(167, 139, 250, .15);
+            color: var(--accent-2);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 16px;
+            padding: 16px;
+            height: calc(100vh - 66px);
+        }
+
+        @media (max-width: 960px) {
+            .grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+        }
+
+        .controls {
+            padding: 16px;
+            display: grid;
+            gap: 12px;
+            align-content: start;
+        }
+
+        .controls h2 {
+            font-size: 14px;
+            margin: 0 0 8px;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        label {
+            display: grid;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: #0b1220;
+            color: var(--text);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 14px;
+            outline: none;
+            transition: box-shadow .15s, border-color .15s;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--ring);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .checks {
+            display: grid;
+            gap: 8px;
+        }
+
+        .checks label {
+            grid-template-columns: 18px 1fr;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .checks input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #22d3ee;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            background: linear-gradient(180deg, rgba(34, 211, 238, .2), rgba(167, 139, 250, .2));
+            color: white;
+            font-weight: 700;
+            letter-spacing: .2px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform .06s ease, filter .2s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .viewer {
+            height: 100%;
+            display: grid;
+            grid-template-rows: auto 1fr;
+        }
+
+        .viewer-toolbar {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .viewer-toolbar .status {
+            color: var(--muted);
+            font-size: 12px;
+            margin-left: auto;
+        }
+
+        #adobe-dc-view {
+            height: calc(100% - 49px);
+            border-radius: 0 0 16px 16px;
+            overflow: hidden;
+        }
+
+        .warn {
+            background: #fee2e2;
+            color: #7f1d1d;
+            border: 1px solid #fecaca;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+
+        .log {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+            color: #cbd5e1;
+            height: 140px;
+            overflow: auto;
+            background: #0b1220;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, .06);
+            padding: 8px;
+        }
+
+        .small {
+            font-size: 12px;
+            color: var(--muted);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <span class="badge">Adobe PDF Embed API</span>
+        <h1>Playground（埋め込みテスト用ページ）</h1>
+        <span class="hint">※ 左の設定を変えて「PDFを表示」を押すだけ。</span>
+    </header>
+
+    <main class="grid">
+        <!-- Controls -->
+        <section class="card controls" aria-label="コントロール">
+            <h2>設定</h2>
+
+            <div class="warn" id="key-warning" hidden>
+                clientId（APIキー）を設定してください。Adobe Developer Console で取得したキーを <code>CLIENT_ID</code> に入れます。
+            </div>
+
+            <label>
+                API clientId（必須）
+                <input type="text" id="client-id" placeholder="YOUR_ADOBE_CLIENT_ID" />
+            </label>
+
+            <label>
+                PDF の URL
+                <input type="text" id="pdf-url"
+                    value="https://documentcloud.adobe.com/view-sdk-demo/PDFs/Bodea%20Brochure.pdf" />
+            </label>
+
+            <div class="row">
+                <label>
+                    表示モード（embedMode）
+                    <select id="embed-mode">
+                        <option value="SIZED_CONTAINER" selected>SIZED_CONTAINER（一般）</option>
+                        <option value="IN_LINE">IN_LINE（記事内に挿入）</option>
+                        <option value="LIGHT_BOX">LIGHT_BOX（モーダル）</option>
+                        <option value="FULL_WINDOW">FULL_WINDOW（全画面）</option>
+                    </select>
+                </label>
+                <label>
+                    初期表示
+                    <select id="view-mode">
+                        <option value="FIT_WIDTH" selected>FIT_WIDTH</option>
+                        <option value="FIT_PAGE">FIT_PAGE</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="checks">
+                <label><input type="checkbox" id="show-left" checked /> 左パネルを表示（しおり/サムネ）</label>
+                <label><input type="checkbox" id="dock-controls" checked /> ページ操作を固定（dock）</label>
+                <label><input type="checkbox" id="allow-download" /> ダウンロードを許可</label>
+                <label><input type="checkbox" id="allow-print" /> 印刷を許可</label>
+            </div>
+
+            <div style="display:flex; gap: 8px; margin-top: 8px;">
+                <button class="btn" id="render-btn">PDF を表示</button>
+                <a class="btn" href="#" id="sample-urls">サンプルURLに切替</a>
+            </div>
+
+            <p class="small">ローカルで開くときは <code>npx serve</code> などで簡易サーバを立てるのがおすすめです（<code>file://</code>
+                直開きは動作制限がある場合があります）。</p>
+
+            <h2>イベントログ</h2>
+            <div id="log" class="log" aria-live="polite"></div>
+        </section>
+
+        <!-- Viewer -->
+        <section class="card viewer" aria-label="ビューア">
+            <div class="viewer-toolbar">
+                <strong>Viewer</strong>
+                <span class="status" id="status">待機中…</span>
+            </div>
+            <div id="adobe-dc-view"></div>
+        </section>
+    </main>
+
+    <script>
+        // ========= ユーザー操作補助 =========
+        const el = (id) => document.getElementById(id);
+        const logBox = el('log');
+        const statusEl = el('status');
+        const warn = el('key-warning');
+
+        function log(msg, data) {
+            const time = new Date().toLocaleTimeString();
+            logBox.textContent += `[${time}] ${msg}` + (data ? `\n${JSON.stringify(data, null, 2)}` : '') + "\n\n";
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        function fileNameFromUrl(u) {
+            try { return decodeURIComponent(new URL(u).pathname.split('/').pop() || 'document.pdf'); }
+            catch { return 'document.pdf'; }
+        }
+
+        // ========= メイン：Adobe PDF Embed 初期化 & 描画 =========
+        let adobeDCView = null; // SDK のビューインスタンス
+
+        document.addEventListener("adobe_dc_view_sdk.ready", () => {
+            statusEl.textContent = 'SDK 読み込み済み。clientId を設定して描画できます。';
+            // 初回はインスタンスを作らず、描画時に clientId を使って生成する
+        });
+
+        async function render() {
+            const clientId = el('client-id').value.trim();
+            const pdfUrl = el('pdf-url').value.trim();
+            const embedMode = el('embed-mode').value;
+            const viewMode = el('view-mode').value;
+            const showLeft = el('show-left').checked;
+            const dockCtrls = el('dock-controls').checked;
+            const allowDl = el('allow-download').checked;
+            const allowPr = el('allow-print').checked;
+
+            if (!clientId) {
+                warn.hidden = false;
+                statusEl.textContent = 'clientId が未設定です。';
+                return;
+            } else {
+                warn.hidden = true;
+            }
+
+            // 既存インスタンスがあれば破棄（SDKは複数回の preview を許容するがクリーンに）
+            adobeDCView = new AdobeDC.View({
+                clientId,
+                divId: 'adobe-dc-view',
+                locale: 'ja-JP'
+            });
+
+            const viewerConfig = {
+                embedMode,
+                defaultViewMode: viewMode,
+                showLeftHandPanel: showLeft,
+                dockPageControls: dockCtrls,
+                showDownloadPDF: allowDl,
+                showPrintPDF: allowPr
+            };
+
+            statusEl.textContent = '読み込み中…';
+            log('previewFile を呼び出し', { pdfUrl, viewerConfig });
+
+            try {
+                const viewerPromise = adobeDCView.previewFile({
+                    content: { location: { url: pdfUrl } },
+                    metaData: { fileName: fileNameFromUrl(pdfUrl) }
+                }, viewerConfig);
+
+                // イベント購読（閲覧分析など）
+                adobeDCView.registerCallback(
+                    AdobeDC.View.Enum.CallbackType.EVENT_LISTENER,
+                    function (event) {
+                        log(`イベント: ${event.type}`, event.data);
+                    },
+                    { enablePDFAnalytics: true }
+                );
+
+                await viewerPromise;
+                statusEl.textContent = '表示完了';
+            } catch (e) {
+                console.error(e);
+                statusEl.textContent = 'エラー';
+                log('表示でエラーが発生しました', { message: e?.message || e });
+            }
+        }
+
+        // ========= UI ハンドラ =========
+        el('render-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            render();
+        });
+
+        el('sample-urls').addEventListener('click', (e) => {
+            e.preventDefault();
+            const samples = [
+                'https://documentcloud.adobe.com/view-sdk-demo/PDFs/Bodea%20Brochure.pdf',
+                'https://documentcloud.adobe.com/view-sdk-demo/PDFs/Adobe%20Sign.pdf',
+                'https://documentcloud.adobe.com/view-sdk-demo/PDFs/Bodea%20Letter.pdf'
+            ];
+            const next = samples[Math.floor(Math.random() * samples.length)];
+            el('pdf-url').value = next;
+            log('サンプル URL をセット', { url: next });
+        });
+
+        // ========= 初期ヒント =========
+        // URL パラメータで ?client_id=xxx&pdf=... を渡すと即描画
+        window.addEventListener('load', () => {
+            const p = new URLSearchParams(location.search);
+            const cid = p.get('client_id');
+            const pdf = p.get('pdf');
+            if (cid) el('client-id').value = cid;
+            if (pdf) el('pdf-url').value = pdf;
+            if (cid && pdf) render();
+            if (!cid) warn.hidden = false;
+        });
+    </script>
+</body>
+
+</html>
