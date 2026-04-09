@@ -33,26 +33,28 @@
 
     <!-- JSON-LD Structured Data: Person & WebSite -->
     <script type="application/ld+json">
-    [{
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Takafumi Sakurai",
-      "url": "https://www.tsakurai.com",
-      "image": "https://www.tsakurai.com/image/lucky-me-s-iconic-logo.png",
-      "jobTitle": "Web Developer, Programmer, Data Analyst, Engineer",
-      ]
-    },
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Takafumi Sakurai Portfolio",
-      "url": "https://www.tsakurai.com",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://www.tsakurai.com/?s={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }]
+      "@graph": [
+        {
+          "@type": "Person",
+          "name": "Takafumi Sakurai",
+          "url": "https://www.tsakurai.com",
+          "image": "https://www.tsakurai.com/image/lucky-me-s-iconic-logo.png",
+          "jobTitle": "Web Developer, Programmer, Data Analyst, Engineer"
+        },
+        {
+          "@type": "WebSite",
+          "name": "Takafumi Sakurai Portfolio",
+          "url": "https://www.tsakurai.com",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.tsakurai.com/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
     </script>
 
     <!-- Stylesheet -->
@@ -102,12 +104,6 @@
 
     <!-- Scripts -->
     <script src="js/script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const year = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric' });
-            document.getElementById('current-year').textContent = year;
-        });
-    </script>
 </body>
 
 </html>
