@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     yearEl.textContent = year;
   }
 
-  // Remove leaked metadata text, including incomplete fragments like:
-  // { "language": "html", "source": " ...
-  const metadataPattern = /\{\s*"language"\s*:\s*"html"\s*,\s*"source"\s*:\s*"[\s\S]*?(?:"\s*\}|$)/g;
+
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const targets = [];
 
@@ -19,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (metadataPattern.test(node.textContent || '')) {
       targets.push(node);
     }
-    metadataPattern.lastIndex = 0;
+
   }
 
   targets.forEach((node) => {
