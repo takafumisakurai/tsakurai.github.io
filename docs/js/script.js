@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     yearEl.textContent = year;
   }
 
-  const metadataPattern = /\{\s*"language"\s*:\s*"html"\s*,\s*"source"\s*:\s*"[\s\S]*?"\s*\}/;
+
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const targets = [];
 
@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (metadataPattern.test(node.textContent || '')) {
       targets.push(node);
     }
+
   }
 
   targets.forEach((node) => {
