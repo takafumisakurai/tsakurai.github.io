@@ -33,26 +33,28 @@
 
     <!-- JSON-LD Structured Data: Person & WebSite -->
     <script type="application/ld+json">
-    [{
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Takafumi Sakurai",
-      "url": "https://www.tsakurai.com",
-      "image": "https://www.tsakurai.com/image/lucky-me-s-iconic-logo.png",
-      "jobTitle": "Web Developer, Programmer, Data Analyst, Engineer",
-      ]
-    },
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Takafumi Sakurai Portfolio",
-      "url": "https://www.tsakurai.com",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://www.tsakurai.com/?s={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }]
+      "@graph": [
+        {
+          "@type": "Person",
+          "name": "Takafumi Sakurai",
+          "url": "https://www.tsakurai.com",
+          "image": "https://www.tsakurai.com/image/lucky-me-s-iconic-logo.png",
+          "jobTitle": "Web Developer, Programmer, Data Analyst, Engineer"
+        },
+        {
+          "@type": "WebSite",
+          "name": "Takafumi Sakurai Portfolio",
+          "url": "https://www.tsakurai.com",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.tsakurai.com/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
     </script>
 
     <!-- Stylesheet -->
@@ -85,12 +87,11 @@
             </pre>
 
             <p><strong>Name:</strong> <span itemprop="name">Takafumi Sakurai</span></p>
-            <p><strong>Birthplace:</strong> <span itemprop="birthPlace">Miyagi, Japan</span></p>
             <p><strong>Education:</strong><br>
-                Keio University (Master's degree)<br>
-                Harvard Business School (CLIMB Program)</p>
+                Keio University<br>
+                Harvard Business School</p>
             <p><strong>Work Experience:</strong><br>
-                Hakuhodo Inc. / Hakuhodo DY ONE Inc.<br>
+                Hakuhodo Inc.<br>
                 Adobe Inc.<br>
             </p>
         </section>
@@ -102,12 +103,6 @@
 
     <!-- Scripts -->
     <script src="js/script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const year = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric' });
-            document.getElementById('current-year').textContent = year;
-        });
-    </script>
 </body>
 
 </html>
