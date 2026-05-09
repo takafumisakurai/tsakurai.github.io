@@ -8,22 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
     yearEl.textContent = year;
   }
 
-
+  const metadataPattern = /\{\s*"language"\s*:\s*"html"\s*,\s*"source"\s*:\s*"[^"]*"\s*\}/g;
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  const targets = [];
 
   while (walker.nextNode()) {
     const node = walker.currentNode;
-    if (metadataPattern.test(node.textContent || '')) {
-      targets.push(node);
-    }
+    const originalText = node.textContent || '';
+    const cleanedText = originalText.replace(metadataPattern, '').trim();
 
+    if (cleanedText !== originalText) {
+      node.textContent = cleanedText;
+    }
   }
-
-  targets.forEach((node) => {
-    node.textContent = (node.textContent || '').replace(metadataPattern, '').trim();
-    if (!node.textContent) {
-      node.remove();
-    }
-  });
 });
