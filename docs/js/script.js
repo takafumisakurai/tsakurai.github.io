@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     yearEl.textContent = year;
   }
 
-  while (walker.nextNode()) {
-    const node = walker.currentNode;
     }
   }
 });
