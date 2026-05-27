@@ -123,8 +123,8 @@ main {
   padding: clamp(1rem, 3vw, 2rem) clamp(1rem, 4vw, 3rem);
   color: #ffffff;
   background:
-    linear-gradient(90deg, rgba(4, 8, 18, 0.88), rgba(4, 8, 18, 0.42)),
-    url("../image/hero-cosmic-brush-horizontal.jpg") center / cover;
+    linear-gradient(90deg, rgba(4, 8, 18, 0.64), rgba(4, 8, 18, 0.18)),
+    url("../image/hero-cosmic-brush-horizontal.jpg") center / 100% 100% no-repeat;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 8px;
   box-shadow: 0 22px 60px rgba(17, 24, 39, 0.2);
