@@ -4,34 +4,37 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Takafumi Sakurai | 櫻井 崇史</title>
-    <!-- SEO Meta Tags -->
+    <title>Takafumi Sakurai | Executive Tech Portfolio</title>
     <meta name="description"
-        content="Technical Support Engineer and Data Analyst with 10 years of experience in DX SaaS solutions and digital marketing. Certified as Adobe Customer Journey Analytics Developer Expert, Google Advanced Data Analytics, Google Business Intelligence, Microsoft Power BI Data Analyst, Microsoft Azure Developer Associate, IBM Full-Stack JavaScript & Software Developer, Adobe Target Architect Master, Adobe Analytics Developer Expert, Stanford Algorithms & Machine Learning, Johns Hopkins R Programming, University of Washington Machine Learning, Alteryx Designer Core, and Google Analytics Individual Qualification.">
+        content="Takafumi Sakurai is a Technical Support Engineer and Data Analyst specializing in DX SaaS solutions, Adobe Experience Cloud, digital analytics, business intelligence, and implementation support.">
     <meta name="keywords"
-        content="Technical Support Engineer, Data Analyst, DX SaaS, Adobe Experience Platform, Adobe Analytics, Adobe Target, Customer Journey Analytics, Data Science, Machine Learning, Python, R, SQL, Tableau, Power BI, AWS, Azure, JavaScript, Java, Ruby, HTML, Digital Marketing, Finance, Insurance, Automotive, Retail, Bilingual Japanese-English, Adobe Customer Journey Analytics Developer Expert, Google Advanced Data Analytics, Google Business Intelligence, Microsoft Power BI Data Analyst, Microsoft Azure Developer Associate, IBM Full-Stack JavaScript Developer, IBM Full-Stack Software Developer, Adobe Target Architect Master, Adobe Analytics Developer Expert, Adobe Qualified – Adobe Experience Platform, Algorithms – Stanford University, Machine Learning – Stanford University, R Programming – Johns Hopkins University, Machine Learning – University of Washington, Alteryx Designer Core, Google Analytics Individual Qualification">
+        content="Takafumi Sakurai, 櫻井 崇史, Technical Support Engineer, Data Analyst, DX SaaS, Adobe Experience Platform, Adobe Analytics, Adobe Target, Customer Journey Analytics, Data Science, Machine Learning, Python, R, SQL, Tableau, Power BI, AWS, Azure, JavaScript, Digital Marketing, Bilingual Japanese-English">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="https://www.tsakurai.com">
     <meta name="author" content="Takafumi Sakurai">
-    <meta property="og:title" content="Takafumi Sakurai Portfolio">
+    <meta property="og:title" content="Takafumi Sakurai | Executive Tech Portfolio">
     <meta property="og:description"
-        content="Web Developer and Support Engineer specializing in Adobe Analytics and Adobe Target.">
+        content="Technical Support Engineer and Data Analyst specializing in DX SaaS, Adobe Experience Cloud, and digital analytics.">
     <meta property="og:url" content="https://www.tsakurai.com">
     <meta property="og:image" content="https://www.tsakurai.com/image/lucky-me-s-iconic-logo.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Takafumi Sakurai Portfolio">
+    <meta name="twitter:title" content="Takafumi Sakurai | Executive Tech Portfolio">
     <meta name="twitter:description"
-        content="Web Developer and Support Engineer specializing in Adobe Analytics and Adobe Target.">
+        content="Technical Support Engineer and Data Analyst specializing in DX SaaS, Adobe Experience Cloud, and digital analytics.">
     <meta name="twitter:image" content="https://www.tsakurai.com/image/lucky-me-s-iconic-logo.png">
 
-    <!-- Favicons -->
     <link rel="shortcut icon" href="image/lucky-me-s-iconic-logo.png">
     <link rel="apple-touch-icon" href="image/lucky-me-s-iconic-logo.png">
 
-    <!-- Adobe Launch -->
-    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <script>
+        if (["www.tsakurai.com", "tsakurai.com"].includes(window.location.hostname)) {
+            const launchScript = document.createElement("script");
+            launchScript.src = "https://assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js";
+            launchScript.async = true;
+            document.head.appendChild(launchScript);
+        }
+    </script>
 
-    <!-- JSON-LD Structured Data: Person & WebSite -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -39,51 +42,210 @@
         {
           "@type": "Person",
           "name": "Takafumi Sakurai",
+          "alternateName": "櫻井 崇史",
           "url": "https://www.tsakurai.com",
           "image": "https://www.tsakurai.com/image/lucky-me-s-iconic-logo.png",
-          "jobTitle": "Web Developer, Programmer, Data Analyst, Engineer"
+          "jobTitle": "Technical Support Engineer and Data Analyst",
+          "knowsAbout": [
+            "Adobe Experience Cloud",
+            "Digital Analytics",
+            "Customer Journey Analytics",
+            "Business Intelligence",
+            "DX SaaS",
+            "Data Science"
+          ],
+          "sameAs": [
+            "https://github.com/takafumisakurai"
+          ]
         },
         {
           "@type": "WebSite",
           "name": "Takafumi Sakurai Portfolio",
-          "url": "https://www.tsakurai.com",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://www.tsakurai.com/?s={search_term_string}",
-            "query-input": "required name=search_term_string"
-          }
+          "url": "https://www.tsakurai.com"
         }
       ]
     }
     </script>
 
-    <!-- Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body itemscope itemtype="https://schema.org/Person">
+    <header class="site-header">
+        <a class="brand" href="#top" aria-label="Takafumi Sakurai home">
+            <img src="image/lucky-me-s-iconic-logo.png" alt="" width="40" height="40">
+            <span>Takafumi Sakurai</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+            <a href="#expertise">Expertise</a>
+            <a href="#experience">Experience</a>
+            <a href="#credentials">Credentials</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
 
+    <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-inner">
+                <p class="eyebrow">Executive Tech Portfolio</p>
+                <h1 id="hero-title" itemprop="name">Takafumi Sakurai</h1>
+                <p class="name-jp">櫻井 崇史</p>
+                <p class="hero-role" itemprop="jobTitle">Technical Support Engineer / Data Analyst</p>
+                <p class="hero-copy">
+                    I help enterprise teams solve complex digital experience, analytics, and SaaS implementation
+                    challenges with a blend of technical support, data analysis, and business context.
+                </p>
+                <div class="hero-actions" aria-label="Portfolio actions">
+                    <a class="button button-primary" href="#experience">View Experience</a>
+                    <a class="button button-secondary" href="https://github.com/takafumisakurai">GitHub Profile</a>
+                </div>
+            </div>
+        </section>
 
+        <section class="signal-strip" aria-label="Professional highlights">
+            <div>
+                <span class="signal-value">10+</span>
+                <span class="signal-label">Years across DX SaaS and digital marketing</span>
+            </div>
+            <div>
+                <span class="signal-value">Adobe</span>
+                <span class="signal-label">Experience Cloud, Analytics, Target, CJA</span>
+            </div>
+            <div>
+                <span class="signal-value">BI</span>
+                <span class="signal-label">Power BI, Tableau, SQL, Python, R</span>
+            </div>
+        </section>
 
-    <main>
-        <section id="profile" itemscope itemtype="https://schema.org/Person" style="text-align: center;">
+        <section class="section about-section" aria-labelledby="about-title">
+            <div class="section-heading">
+                <p class="section-label">Profile</p>
+                <h2 id="about-title">Enterprise support with analytical depth.</h2>
+            </div>
+            <div class="section-body">
+                <p>
+                    My work sits at the intersection of technical support, data analytics, and digital transformation.
+                    I translate complex product behavior into clear next steps for stakeholders, and I use data to
+                    make technical decisions easier to trust.
+                </p>
+                <p>
+                    With experience at Hakuhodo Inc. and Adobe Inc., I bring both consulting-oriented communication
+                    and hands-on SaaS implementation knowledge to enterprise customer challenges.
+                </p>
+            </div>
+        </section>
 
-            <p><strong>Name:</strong> <span itemprop="name">Takafumi Sakurai</span></p>
-            <p><strong>Education:</strong><br>
-                Keio University<br>
-                Harvard Business School</p>
-            <p><strong>Work Experience:</strong><br>
-                Hakuhodo Inc.<br>
-                Adobe Inc.<br>
-            </p>
+        <section class="section" id="expertise" aria-labelledby="expertise-title">
+            <div class="section-heading">
+                <p class="section-label">Expertise</p>
+                <h2 id="expertise-title">Focused capabilities for modern digital teams.</h2>
+            </div>
+            <div class="expertise-grid">
+                <article class="expertise-card">
+                    <h3>DX SaaS Support</h3>
+                    <p>Technical investigation, customer communication, and issue resolution for enterprise SaaS environments.</p>
+                </article>
+                <article class="expertise-card">
+                    <h3>Adobe Experience Cloud</h3>
+                    <p>Analytics, Target, Customer Journey Analytics, and implementation-oriented troubleshooting.</p>
+                </article>
+                <article class="expertise-card">
+                    <h3>Data Analytics</h3>
+                    <p>Python, R, SQL, statistics, machine learning fundamentals, and business intelligence workflows.</p>
+                </article>
+                <article class="expertise-card">
+                    <h3>Business Translation</h3>
+                    <p>Clear technical narratives for marketing, product, engineering, and executive stakeholders.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="experience" aria-labelledby="experience-title">
+            <div class="section-heading">
+                <p class="section-label">Experience</p>
+                <h2 id="experience-title">A career spanning marketing, platforms, and analytics.</h2>
+            </div>
+            <div class="timeline">
+                <article class="timeline-item">
+                    <div class="timeline-marker" aria-hidden="true"></div>
+                    <div>
+                        <p class="timeline-company">Adobe Inc.</p>
+                        <h3>Technical Support Engineer / Data Analyst</h3>
+                        <p>Support for enterprise digital experience and analytics solutions, with emphasis on product behavior, implementation quality, and customer outcomes.</p>
+                    </div>
+                </article>
+                <article class="timeline-item">
+                    <div class="timeline-marker" aria-hidden="true"></div>
+                    <div>
+                        <p class="timeline-company">Hakuhodo Inc.</p>
+                        <h3>Digital Marketing and Business Experience</h3>
+                        <p>Marketing, communication, and business-side experience that informs technical conversations with practical commercial context.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="credentials" aria-labelledby="credentials-title">
+            <div class="section-heading">
+                <p class="section-label">Credentials</p>
+                <h2 id="credentials-title">Certified across analytics, BI, cloud, and software.</h2>
+            </div>
+            <div class="credential-grid">
+                <article class="credential-card">
+                    <h3>Adobe</h3>
+                    <ul>
+                        <li>Customer Journey Analytics Developer Expert</li>
+                        <li>Adobe Target Architect Master</li>
+                        <li>Adobe Analytics Developer Expert</li>
+                        <li>Adobe Qualified - Adobe Experience Platform</li>
+                    </ul>
+                </article>
+                <article class="credential-card">
+                    <h3>Analytics and BI</h3>
+                    <ul>
+                        <li>Google Advanced Data Analytics</li>
+                        <li>Google Business Intelligence</li>
+                        <li>Microsoft Power BI Data Analyst</li>
+                        <li>Google Analytics Individual Qualification</li>
+                    </ul>
+                </article>
+                <article class="credential-card">
+                    <h3>Engineering and Cloud</h3>
+                    <ul>
+                        <li>Microsoft Azure Developer Associate</li>
+                        <li>IBM Full-Stack JavaScript Developer</li>
+                        <li>IBM Full-Stack Software Developer</li>
+                        <li>Alteryx Designer Core</li>
+                    </ul>
+                </article>
+                <article class="credential-card">
+                    <h3>Academic Foundations</h3>
+                    <ul>
+                        <li>Keio University</li>
+                        <li>Harvard Business School</li>
+                        <li>Stanford Algorithms and Machine Learning</li>
+                        <li>Johns Hopkins R Programming</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="contact-section" id="contact" aria-labelledby="contact-title">
+            <div>
+                <p class="section-label">Contact</p>
+                <h2 id="contact-title">Connect for analytics, SaaS, and implementation work.</h2>
+            </div>
+            <a class="button button-primary" href="https://github.com/takafumisakurai">Open GitHub Profile</a>
         </section>
     </main>
 
-    <footer style="text-align: center;">
-        <p>&copy; <span id="current-year"></span> All rights reserved.</p>
+    <footer class="site-footer">
+        <p>&copy; <span id="current-year"></span> Takafumi Sakurai. All rights reserved.</p>
     </footer>
 
-    <!-- Scripts -->
+    <script>
+        document.getElementById("current-year").textContent = new Date().getFullYear();
+    </script>
 </body>
 
 </html>
