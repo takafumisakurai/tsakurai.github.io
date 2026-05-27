@@ -252,14 +252,16 @@ main {
 }
 
 .expertise-grid,
-.credential-grid {
+.credential-grid,
+.impact-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
 }
 
 .expertise-card,
-.credential-card {
+.credential-card,
+.impact-card {
   min-height: 100%;
   padding: 1.25rem;
   background: var(--surface);
@@ -278,6 +280,19 @@ main {
 .expertise-card p,
 .timeline-item p {
   margin: 0;
+  color: var(--muted);
+}
+
+.impact-card span {
+  display: block;
+  color: var(--accent-dark);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1;
+  font-weight: 800;
+}
+
+.impact-card p {
+  margin: 0.85rem 0 0;
   color: var(--muted);
 }
 
@@ -312,12 +327,50 @@ main {
   font-weight: 800;
 }
 
+.timeline-date {
+  margin-bottom: 0.85rem !important;
+  color: #344054 !important;
+  font-weight: 700;
+}
+
+.timeline-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.85rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+}
+
+.award-line {
+  margin-top: 0.9rem !important;
+  color: #344054 !important;
+  font-weight: 700;
+}
+
 .credential-card ul {
   display: grid;
   gap: 0.55rem;
   margin: 0;
   padding-left: 1.1rem;
   color: var(--muted);
+}
+
+.skill-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.skill-cloud span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0.35rem 0.65rem;
+  color: var(--accent-dark);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-weight: 700;
 }
 
 .contact-section {
@@ -337,6 +390,13 @@ main {
   margin-bottom: 0.6rem;
 }
 
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  justify-content: flex-end;
+}
+
 .site-footer {
   width: min(1120px, calc(100% - 2rem));
   margin: 0 auto;
@@ -353,14 +413,16 @@ main {
 
   .site-nav {
     width: 100%;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    overflow-x: visible;
     padding-bottom: 0.1rem;
   }
 
   .signal-strip,
   .section-body,
   .expertise-grid,
-  .credential-grid {
+  .credential-grid,
+  .impact-grid {
     grid-template-columns: 1fr;
   }
 
@@ -372,6 +434,10 @@ main {
   .contact-section {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .contact-links {
+    justify-content: flex-start;
   }
 }
 
@@ -402,6 +468,7 @@ main {
   .signal-strip div,
   .expertise-card,
   .credential-card,
+  .impact-card,
   .timeline-item,
   .contact-section {
     padding: 1rem;
