@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /login/
+Disallow: /customlink/
+Disallow: /Cookie/
+Disallow: /pdf_embed/
+Disallow: /misc/
+Disallow: /docs/
+Disallow: /1.html
+Disallow: /2.html
+Disallow: /3.html
+Disallow: /4.html
+
+Sitemap: https://www.tsakurai.com/sitemap.xml

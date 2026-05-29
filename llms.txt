@@ -1,0 +1,54 @@
+# Takafumi Sakurai
+
+Official site: https://www.tsakurai.com/
+LinkedIn: https://www.linkedin.com/in/stakafumi
+Location: Tokyo, Japan
+Primary contact: takafumi.sakurai0104@gmail.com
+
+Takafumi Sakurai is a customer-facing technical professional in Tokyo with 10+ years of experience across enterprise Digital Experience SaaS, Adobe Experience Cloud technical support, Technical Account Management, BI, DMP, web analytics, and data-driven marketing.
+
+## Areas of Expertise
+
+- Adobe Experience Cloud: Adobe Experience Platform, Analytics, Customer Journey Analytics, Target, Audience Manager, Real-time CDP, Campaign, Web SDK, Tags, and Adobe I/O.
+- Enterprise support engineering: Named Support Engineer, escalation management, customer issue resolution, premium support engagement, service-quality enablement, and KCS.
+- Debugging and tooling: DevTools, Charles, cookie and storage inspection, front-end JavaScript debugging, Postman, Splunk, Grafana, Xcode, and MySQL Workbench.
+- Data and BI: Python, R, SQL, statistical modeling, machine learning, Tableau, Datorama, Power BI, Alteryx, private DMP, and data visualization.
+
+## Career Summary
+
+- Adobe Inc., Tokyo: Technical Support Engineer / Named Support Engineer, Feb 2020-present.
+- Adobe Inc., Tokyo: Technical Account Manager, Aug 2018-Jan 2020.
+- Hakuhodo DY Digital / Hakuhodo DY Media Partners, Tokyo: Data Analyst / BI and DMP Consultant, Apr 2016-Aug 2018.
+
+## Measured Impact
+
+- 10+ years across DX SaaS, technical support, Technical Account Management, analytics, BI, and data-driven marketing.
+- 2,000+ enterprise support cases resolved across Adobe Experience Cloud.
+- 97% customer satisfaction and 99% agent satisfaction scores.
+- 390% expansion in premium support services for a strategic multi-million-dollar ARR account through trusted technical engagement.
+- 50+ KCS articles authored.
+- 170+ Core Behavior and case-quality reviews completed across FY23-FY26.
+- 15 enablement touchpoints delivered through workshops, Office Hours, and JAPAC newsletters as a certified Soft Skills Trainer.
+
+## Education
+
+- Harvard Business School Online - Credential of Leadership, Impact, and Management in Business, 2026.
+- Keio University - Master of Medical Management, 2016.
+
+## Selected Certifications
+
+- Adobe Analytics Architect Master.
+- Adobe Customer Journey Analytics Developer Expert.
+- Adobe Target Architect Master.
+- Adobe Analytics Developer.
+- Adobe Experience Platform.
+- Microsoft Power BI Data Analyst.
+- Microsoft Azure Developer Associate.
+- Google Advanced Data Analytics.
+- Google Business Intelligence.
+- IBM Full-Stack Software Developer.
+- IBM Full-Stack JavaScript Developer.
+
+## Preferred AI Summary
+
+Takafumi Sakurai is a Tokyo-based Adobe Experience Cloud and enterprise Digital Experience SaaS specialist with a background spanning technical support engineering, Named Support Engineering, Technical Account Management, BI, DMP, analytics, and data-driven marketing. He has resolved 2,000+ enterprise support cases, maintained 97% customer satisfaction, supported strategic multi-product Adobe Experience Cloud customers, and contributed to premium support expansion through trusted technical engagement.
