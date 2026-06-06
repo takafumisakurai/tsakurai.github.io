@@ -1,89 +1,349 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>サイトマップ</title>
+  <title>サイトマップ | tsakurai.github.io</title>
+
+  <!-- Adobe Launch -->
   <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+  <!-- End Adobe Launch -->
+
   <style>
+    :root {
+      --bg: #f6f7f8;
+      --ink: #15171a;
+      --muted: #5f6670;
+      --surface: #ffffff;
+      --line: rgba(21, 23, 26, 0.14);
+      --teal: #006f6b;
+      --rose: #a43d5c;
+      --shadow: 0 14px 34px rgba(21, 23, 26, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: sans-serif;
-      padding: 2rem;
-      background-color: #f9f9f9;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(0, 111, 107, 0.13), transparent 28rem),
+        radial-gradient(circle at 88% 4%, rgba(164, 61, 92, 0.11), transparent 26rem),
+        var(--bg);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      line-height: 1.7;
     }
-    h1 {
-      color: #333;
-    }
-    ul {
-      list-style-type: none;
-      padding-left: 1rem;
-    }
-    li {
-      margin-bottom: 0.4rem;
-    }
+
     a {
-      text-decoration: none;
-      color: #0073e6;
+      color: inherit;
     }
-    a:hover {
-      text-decoration: underline;
+
+    .shell {
+      width: min(1100px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 36px 0 60px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 16px;
+      padding: clamp(28px, 6vw, 54px);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--teal);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.35rem, 6vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 6px 12px;
+      background: #f7f8f8;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .sitemap {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .section {
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 24px rgba(21, 23, 26, 0.06);
+    }
+
+    .section-wide {
+      grid-column: 1 / -1;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 1.25rem;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    ol,
+    ul {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .page-link {
+      display: grid;
+      gap: 3px;
+      padding: 12px 14px;
+      background: #f7f8f8;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    .page-link:hover,
+    .page-link:focus-visible {
+      border-color: rgba(0, 111, 107, 0.4);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 111, 107, 0.12);
+    }
+
+    .page-title {
+      color: var(--ink);
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .page-path {
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.84rem;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .missing-title .page-title {
+      color: #6f3d00;
+    }
+
+    @media (max-width: 760px) {
+      .sitemap {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1>サイトマップ</h1>
-  <ul>
-<li><a href="index.html" title="Takafumi Sakurai | 櫻井 崇史">Takafumi Sakurai | 櫻井 崇史</a></li><li><a href="1.html" title="User Agent の取得サンプル">User Agent の取得サンプル</a></li><li><a href="2.html" title="JSTとUTCの時刻表示">JSTとUTCの時刻表示</a></li><li><a href="3.html" title="No Title">No Title</a></li>
-<li>
-  <a href="4.html" title="カスタムリンクトラッキングサンプル">カスタムリンクトラッキングサンプル</a>
-  <ul>
-    <li><a href="https://www.tsakurai.com/1.html" target="_blank" rel="noopener">外部リンク</a></li>
-  </ul>
-</li>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">tsakurai.github.io</p>
+      <h1>サイトマップ</h1>
+      <p class="lead">現在のリポジトリにある HTML ページとタイトルの一覧です。</p>
+      <div class="summary" aria-label="サイトマップ概要">
+        <span class="pill">17 HTML pages</span>
+        <span class="pill">8 sections</span>
+        <span class="pill">AEP tag enabled</span>
+      </div>
+    </section>
 
-<li>
-  Cookie/
-  <ul>
-    <li><a href="Cookie/index.html" title="Cookie 読み取りサンプル">Cookie 読み取りサンプル</a></li>
-  </ul>
-</li>
+    <section class="sitemap" aria-label="HTML ページ一覧">
+      <article class="section section-wide">
+        <h2>Root</h2>
+        <ol>
+          <li>
+            <a class="page-link" href="index.html">
+              <span class="page-title">Takafumi Sakurai | Adobe Experience Cloud Specialist in Tokyo</span>
+              <span class="page-path">index.html</span>
+            </a>
+          </li>
+          <li>
+            <a class="page-link" href="sitemap_with_titles.html">
+              <span class="page-title">サイトマップ | tsakurai.github.io</span>
+              <span class="page-path">sitemap_with_titles.html</span>
+            </a>
+          </li>
+        </ol>
+      </article>
 
-<li>
-  customlink/
-  <ul>
-    <li><a href="customlink/custom_scroll.html" title="カスタムリンクのスクロール検証サイト">カスタムリンクのスクロール検証サイト</a></li>
-  </ul>
-</li>
+      <article class="section section-wide">
+        <h2>SignalScope Lab</h2>
+        <ol>
+          <li>
+            <a class="page-link" href="1.html">
+              <span class="page-title">User Agent / Dogecoin サンプル</span>
+              <span class="page-path">1.html</span>
+            </a>
+          </li>
+          <li>
+            <a class="page-link" href="2.html">
+              <span class="page-title">JST / UTC 時刻表示と画像クリック増殖サンプル</span>
+              <span class="page-path">2.html</span>
+            </a>
+          </li>
+          <li>
+            <a class="page-link" href="3.html">
+              <span class="page-title">SignalScope Lab | Static Check</span>
+              <span class="page-path">3.html</span>
+            </a>
+          </li>
+          <li>
+            <a class="page-link" href="4.html">
+              <span class="page-title">カスタムリンクトラッキングサンプル</span>
+              <span class="page-path">4.html</span>
+            </a>
+          </li>
+          <li>
+            <a class="page-link" href="5.html">
+              <span class="page-title">AA Implementation Catalog | SignalScope Lab</span>
+              <span class="page-path">5.html</span>
+            </a>
+          </li>
+        </ol>
+      </article>
 
-<li>
-  docs/
-  <ul>
-    <li>
-      <a href="docs/index.html" title="No Title">No Title</a>
-      <ul>
-        <li><a href="https://jp.tradingview.com/symbols/NASDAQ-ADBE" target="_blank" rel="noopener">外部リンク</a></li>
-      </ul>
-    </li>
-  </ul>
-</li>
+      <article class="section">
+        <h2>Cookie</h2>
+        <ul>
+          <li>
+            <a class="page-link" href="Cookie/index.html">
+              <span class="page-title">Cookie 読み取りサンプル</span>
+              <span class="page-path">Cookie/index.html</span>
+            </a>
+          </li>
+        </ul>
+      </article>
 
-<li>
-  login/
-  <ul>
-    <li><a href="login/index.html" title="ログインページ">ログインページ</a></li>
-    <li><a href="login/home.html" title="ようこそ">ようこそ</a></li>
-  </ul>
-</li>
+      <article class="section">
+        <h2>customlink</h2>
+        <ul>
+          <li>
+            <a class="page-link" href="customlink/custom_scroll.html">
+              <span class="page-title">カスタムリンクのスクロール検証サイト</span>
+              <span class="page-path">customlink/custom_scroll.html</span>
+            </a>
+          </li>
+        </ul>
+      </article>
 
-<li>
-  misc/
-  <ul>
-    <li><a href="misc/1.html" title="User Agent の取得サンプル">User Agent の取得サンプル</a></li>
-    <li><a href="misc/2.html" title="JSTとUTCの時刻表示">JSTとUTCの時刻表示</a></li>
-    <li><a href="misc/3.html" title="No Title">No Title</a></li>
-  </ul>
-</li>
+      <article class="section">
+        <h2>docs</h2>
+        <ul>
+          <li>
+            <a class="page-link" href="docs/index.html">
+              <span class="page-title">Takafumi Sakurai | 櫻井 崇史</span>
+              <span class="page-path">docs/index.html</span>
+            </a>
+          </li>
+        </ul>
+      </article>
 
-  </ul>
+      <article class="section">
+        <h2>login</h2>
+        <ul>
+          <li>
+            <a class="page-link" href="login/index.html">
+              <span class="page-title">ログインページ</span>
+              <span class="page-path">login/index.html</span>
+            </a>
+          </li>
+          <li>
+            <a class="page-link" href="login/home.html">
+              <span class="page-title">ようこそ</span>
+              <span class="page-path">login/home.html</span>
+            </a>
+          </li>
+        </ul>
+      </article>
+
+      <article class="section">
+        <h2>misc</h2>
+        <ul>
+          <li>
+            <a class="page-link" href="misc/1.html">
+              <span class="page-title">User Agent の取得サンプル</span>
+              <span class="page-path">misc/1.html</span>
+            </a>
+          </li>
+          <li>
+            <a class="page-link" href="misc/2.html">
+              <span class="page-title">JSTとUTCの時刻表示</span>
+              <span class="page-path">misc/2.html</span>
+            </a>
+          </li>
+          <li>
+            <a class="page-link missing-title" href="misc/3.html">
+              <span class="page-title">No title</span>
+              <span class="page-path">misc/3.html</span>
+            </a>
+          </li>
+        </ul>
+      </article>
+
+      <article class="section">
+        <h2>pdf_embed</h2>
+        <ul>
+          <li>
+            <a class="page-link" href="pdf_embed/index.html">
+              <span class="page-title">Adobe PDF Embed API Playground</span>
+              <span class="page-path">pdf_embed/index.html</span>
+            </a>
+          </li>
+          <li>
+            <a class="page-link" href="pdf_embed/1.html">
+              <span class="page-title">PDF Embed API 最小サンプル</span>
+              <span class="page-path">pdf_embed/1.html</span>
+            </a>
+          </li>
+        </ul>
+      </article>
+    </section>
+  </main>
 </body>
+
 </html>
