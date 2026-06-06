@@ -1,66 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Agent / Dogecoin サンプル</title>
+    <link rel="stylesheet" href="css/validation.css">
+
     <!-- Adobe Launch -->
     <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
     <!-- End Adobe Launch -->
-
-
 </head>
 
 <body>
-
-    <h1>Happy Kensho Site</h1>
-
-    <p>Happy.Happy.Happy</p>
-    <p>あいうえお</p>
-    <p>abcde</p>
-
-    <!DOCTYPE html>
-    <html lang="ja">
-
-    <head>
-        <meta charset="UTF-8">
-        <title>User Agent の取得サンプル</title>
-    </head>
-
-    <body>
-        <p id="ua"></p>
-        <script>
-            const ua = navigator.userAgent;
-            document.getElementById('ua').textContent = `あなたの User Agent は ${ua}`;
-        </script>
-
-        <!DOCTYPE html>
-        <html lang="ja">
-
-        <!DOCTYPE html>
-        <html lang="ja">
-
-        <head>
-            <meta charset="UTF-8">
-            <title>Dogecoin ロゴ埋め込みサンプル</title>
-        </head>
-
-        <body>
-            <h1>Dogecoin ロゴとボタン</h1>
-            <img src="https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png" alt="Dogecoin Logo" width="200">
-            <br>
-            <button id="myButton">クリックしてね！</button>
-            <p>クリック回数：<span id="count">0</span></p>
-            <script>
-                let count = 0;
-                document.getElementById('myButton').addEventListener('click', function () {
-                    count++;
-                    document.getElementById('count').textContent = count;
-                });
-            </script>
-
-            <a href="/2.html">
-                <img src="https://sato-icons.com/wp/wp-content/uploads/2020/10/%E6%AC%A1%E3%81%AB%E9%80%B2%E3%82%80%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B36.png"
-                    width="50" alt="次に進むアイコン">
+    <div class="shell">
+        <header class="site-header">
+            <a class="brand" href="1.html">
+                <span class="brand-mark">K</span>
+                <span>Happy Kensho Site</span>
             </a>
-        </body>
+            <nav class="test-nav" aria-label="検証ページ">
+                <a href="1.html" aria-current="page">1.html</a>
+                <a href="2.html">2.html</a>
+                <a href="3.html">3.html</a>
+                <a href="4.html">4.html</a>
+            </nav>
+        </header>
 
-        </html>
+        <main>
+            <section class="hero">
+                <div>
+                    <p class="eyebrow">Test 01</p>
+                    <h1>Happy Kensho Site</h1>
+                    <p class="lead">Happy.Happy.Happy / あいうえお / abcde</p>
+                </div>
+                <div class="status-pill">User Agent<br>Dogecoin</div>
+            </section>
+
+            <section class="grid">
+                <article class="panel panel-wide">
+                    <h2>User Agent の取得サンプル</h2>
+                    <p id="ua" class="ua-box"></p>
+                </article>
+
+                <article class="panel">
+                    <h2>Dogecoin ロゴとボタン</h2>
+                    <div class="asset-row">
+                        <img class="logo-preview" src="https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png" alt="Dogecoin Logo" width="200">
+                        <div>
+                            <button class="button" id="myButton">クリックしてね！</button>
+                            <p class="metric">
+                                <span>クリック回数：</span>
+                                <span class="metric-value" id="count">0</span>
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <h2>次の検証ページ</h2>
+                    <p>JST / UTC の時刻表示と画像クリック増殖サンプルへ進みます。</p>
+                    <a class="next-link" href="2.html">
+                        <img class="next-icon" src="https://sato-icons.com/wp/wp-content/uploads/2020/10/%E6%AC%A1%E3%81%AB%E9%80%B2%E3%82%80%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B36.png" width="50" alt="次に進むアイコン">
+                    </a>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const ua = navigator.userAgent;
+        document.getElementById('ua').textContent = `あなたの User Agent は ${ua}`;
+
+        let count = 0;
+        document.getElementById('myButton').addEventListener('click', function () {
+            count++;
+            document.getElementById('count').textContent = count;
+        });
+    </script>
+</body>
+
+</html>

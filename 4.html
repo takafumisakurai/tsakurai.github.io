@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>カスタムリンクトラッキングサンプル</title>
+    <link rel="stylesheet" href="css/validation.css">
 
     <!-- Adobe Launch -->
     <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
@@ -12,12 +13,43 @@
 </head>
 
 <body>
-    <h1>カスタムリンクトラッキングテスト</h1>
-    <a href="https://www.tsakurai.com/1.html" onclick="
-       s.tl(true, 'o', 'customlinktracking_test');
-     ">
-        Click here
-    </a>
+    <div class="shell">
+        <header class="site-header">
+            <a class="brand" href="1.html">
+                <span class="brand-mark">K</span>
+                <span>Happy Kensho Site</span>
+            </a>
+            <nav class="test-nav" aria-label="検証ページ">
+                <a href="1.html">1.html</a>
+                <a href="2.html">2.html</a>
+                <a href="3.html">3.html</a>
+                <a href="4.html" aria-current="page">4.html</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div>
+                    <p class="eyebrow">Test 04</p>
+                    <h1>カスタムリンクトラッキングテスト</h1>
+                    <p class="lead">Adobe Launch のタグを読み込み、クリック時のカスタムリンク計測を検証します。</p>
+                </div>
+                <div class="status-pill">Custom Link<br>Tracking</div>
+            </section>
+
+            <section class="grid">
+                <article class="panel panel-wide callout">
+                    <h2>カスタムリンクトラッキングサンプル</h2>
+                    <p>リンククリックで <code>customlinktracking_test</code> を送信します。</p>
+                    <a class="button" href="https://www.tsakurai.com/1.html" onclick="
+                       s.tl(true, 'o', 'customlinktracking_test');
+                     ">
+                        Click here
+                    </a>
+                </article>
+            </section>
+        </main>
+    </div>
 </body>
 
 </html>
