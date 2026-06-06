@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AA Implementation Catalog | SignalScope Lab</title>
+    <link rel="stylesheet" href="css/validation.css">
+
+    <!-- Adobe Launch -->
+    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <!-- End Adobe Launch -->
+</head>
+
+<body>
+    <div class="shell">
+        <header class="site-header">
+            <a class="brand" href="1.html">
+                <span class="brand-mark">S</span>
+                <span class="brand-copy">
+                    <span class="brand-title">SignalScope Lab</span>
+                    <span class="brand-subtitle">AEP &amp; Tracking Validation</span>
+                </span>
+            </a>
+            <nav class="test-nav" aria-label="検証ページ">
+                <a href="1.html">1.html</a>
+                <a href="2.html">2.html</a>
+                <a href="3.html">3.html</a>
+                <a href="4.html">4.html</a>
+                <a href="5.html" aria-current="page">5.html</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div>
+                    <p class="eyebrow">Test 05</p>
+                    <h1>AA Implementation Catalog</h1>
+                    <p class="lead">Campaign, internal search, commerce, forms, media, SPA, consent, and variable preview scenarios for Adobe Analytics validation.</p>
+                </div>
+                <div class="status-pill">AA Catalog<br>Test Harness</div>
+            </section>
+
+            <section class="grid">
+                <article class="panel">
+                    <h2>実装モード切替</h2>
+                    <p>AppMeasurement / Web SDK どちらの設計で検証しているかをログに残します。</p>
+                    <div class="tracking-actions" role="group" aria-label="Implementation mode">
+                        <button class="button" id="modeAppMeasurement">AppMeasurement</button>
+                        <button class="button button-secondary" id="modeWebSdk">Web SDK style</button>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <h2>Campaign Landing</h2>
+                    <p>流入コード、UTM、内部キャンペーンの格納先を検証します。</p>
+                    <form class="mini-form" id="campaignForm">
+                        <label for="campaignCode">Campaign code</label>
+                        <input id="campaignCode" type="text" value="spring_sale_2026">
+                        <label for="campaignSource">Source / medium</label>
+                        <input id="campaignSource" type="text" value="newsletter / email">
+                        <button class="button" type="submit">Campaign hit を送信</button>
+                    </form>
+                </article>
+
+                <article class="panel">
+                    <h2>Internal Search</h2>
+                    <p>検索語、検索結果件数、0 件検索、フィルターを検証します。</p>
+                    <form class="mini-form" id="searchForm">
+                        <label for="searchTerm">Search term</label>
+                        <input id="searchTerm" type="search" value="analytics">
+                        <label for="searchFilter">Filter</label>
+                        <select id="searchFilter">
+                            <option value="none">No filter</option>
+                            <option value="type:article">type:article</option>
+                            <option value="type:product">type:product</option>
+                            <option value="zero-result">force zero result</option>
+                        </select>
+                        <button class="button" type="submit">Search hit を送信</button>
+                    </form>
+                </article>
+
+                <article class="panel">
+                    <h2>Commerce Mini Funnel</h2>
+                    <p>商品閲覧、カート追加、チェックアウト、購入完了を product string 付きで検証します。</p>
+                    <div class="product-mini">
+                        <div>
+                            <strong>LAB-SKU-001</strong>
+                            <span>SignalScope Hoodie / 19,800 JPY</span>
+                        </div>
+                        <div class="tracking-actions">
+                            <button class="button button-secondary" id="productViewButton">prodView</button>
+                            <button class="button" id="cartAddButton">scAdd</button>
+                            <button class="button button-secondary" id="checkoutButton">scCheckout</button>
+                            <button class="button" id="purchaseButton">purchase</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <h2>SPA / Component Events</h2>
+                    <p>Virtual page view、タブ、モーダルなど SPA でミスしやすいイベントを検証します。</p>
+                    <div class="tracking-actions">
+                        <button class="button" id="routeAButton">Route A</button>
+                        <button class="button button-secondary" id="routeBButton">Route B</button>
+                        <button class="button button-secondary" id="modalButton">Modal open</button>
+                    </div>
+                    <p class="route-state" id="routeState">Current route: /lab/home</p>
+                </article>
+
+                <article class="panel">
+                    <h2>Consent / Error Case</h2>
+                    <p>同意状態、API エラー、404 相当の失敗ケースをカスタムリンクとして残します。</p>
+                    <div class="tracking-actions">
+                        <button class="button" id="consentInButton">Opt-in</button>
+                        <button class="button button-secondary" id="consentOutButton">Opt-out</button>
+                        <button class="button button-secondary" id="apiErrorButton">API error</button>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <h2>Form Funnel</h2>
+                    <p>フォーム開始、バリデーションエラー、成功送信の各状態を検証します。</p>
+                    <div class="scenario-stack">
+                        <input id="leadEmail" type="email" value="lab@example.com" aria-label="Lead email">
+                        <div class="tracking-actions">
+                            <button class="button button-secondary" id="formStartButton">formStart</button>
+                            <button class="button button-secondary" id="formErrorButton">fieldError</button>
+                            <button class="button" id="formSubmitButton">formSuccess</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <h2>Account Lifecycle</h2>
+                    <p>ログイン、会員登録、ログアウトなどのユーザー状態変更を検証します。</p>
+                    <div class="tracking-actions">
+                        <button class="button" id="signupButton">Signup</button>
+                        <button class="button button-secondary" id="loginButton">Login</button>
+                        <button class="button button-secondary" id="logoutButton">Logout</button>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <h2>Media Progress</h2>
+                    <p>動画/音声プレイヤーの開始、25%、50%、完了イベントを想定します。</p>
+                    <div class="media-card">
+                        <strong>SignalScope Demo Clip</strong>
+                        <div class="meter" aria-hidden="true"><span id="mediaMeter"></span></div>
+                        <div class="tracking-actions">
+                            <button class="button button-secondary" data-media-progress="start">Start</button>
+                            <button class="button button-secondary" data-media-progress="25">25%</button>
+                            <button class="button button-secondary" data-media-progress="50">50%</button>
+                            <button class="button" data-media-progress="complete">Complete</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <h2>Activity Map CTA</h2>
+                    <p>同じリンク文言を複数配置し、クリック箇所の文脈差分を検証します。</p>
+                    <div class="zone-row">
+                        <button class="button button-secondary activity-cta" data-zone="hero">詳しく見る</button>
+                        <button class="button button-secondary activity-cta" data-zone="product">詳しく見る</button>
+                        <button class="button button-secondary activity-cta" data-zone="footer">詳しく見る</button>
+                    </div>
+                </article>
+
+                <article class="panel panel-wide">
+                    <h2>Data Layer Snapshot</h2>
+                    <p>AA へ送る前の状態を JSON として表示し、データレイヤー更新タイミングを検証します。</p>
+                    <button class="button" id="dataLayerButton">Snapshot を生成</button>
+                    <pre class="data-layer-output" id="dataLayerOutput">{}</pre>
+                </article>
+
+                <article class="panel panel-wide tracking-console">
+                    <h2>Expected Beacon Viewer</h2>
+                    <p>クリックごとの linkName、link type、想定 events / eVars / products を表示します。</p>
+                    <p class="tracking-status" id="tracking-status">Ready for AA implementation catalog validation.</p>
+                    <ol class="tracking-log" id="tracking-log"></ol>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/validation-tracking.js"></script>
+    <script>
+        const productString = ';LAB-SKU-001;1;19800';
+
+        function createPurchaseId() {
+            return `LAB-${Date.now()}`;
+        }
+
+        function trackCatalog(linkName, detail, config) {
+            window.SignalScope.trackAdobeLink(Object.assign({
+                linkName,
+                linkType: 'o',
+                detail
+            }, config || {}));
+        }
+
+        document.getElementById('modeAppMeasurement').addEventListener('click', function () {
+            trackCatalog('implementation_mode_select', 'mode=AppMeasurement', {
+                vars: { eVar30: 'AppMeasurement', prop30: 'implementation-mode' },
+                events: 'event30'
+            });
+        });
+
+        document.getElementById('modeWebSdk').addEventListener('click', function () {
+            trackCatalog('implementation_mode_select', 'mode=Web SDK style', {
+                vars: { eVar30: 'Web SDK style', prop30: 'implementation-mode' },
+                events: 'event30'
+            });
+        });
+
+        document.getElementById('campaignForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const code = document.getElementById('campaignCode').value.trim() || 'unknown';
+            const source = document.getElementById('campaignSource').value.trim() || 'unknown';
+            trackCatalog('campaign_parameter_capture', `campaign=${code}; source=${source}`, {
+                vars: { campaign: code, eVar10: source, prop10: 'campaign-landing' },
+                events: 'event10'
+            });
+        });
+
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const term = document.getElementById('searchTerm').value.trim() || 'empty';
+            const filter = document.getElementById('searchFilter').value;
+            const resultCount = filter === 'zero-result' || term.toLowerCase() === 'zzzzz' ? 0 : 12;
+            trackCatalog(resultCount === 0 ? 'zero_result_search' : 'internal_search', `term=${term}; filter=${filter}; results=${resultCount}`, {
+                vars: { eVar11: term, prop11: filter, list1: filter === 'none' ? '' : filter },
+                events: resultCount === 0 ? 'event12' : 'event11'
+            });
+        });
+
+        document.getElementById('productViewButton').addEventListener('click', function () {
+            trackCatalog('commerce_product_view', 'sku=LAB-SKU-001', {
+                products: productString,
+                events: 'prodView,event20',
+                vars: { eVar20: 'product-detail', eVar21: 'catalog-browse' }
+            });
+        });
+
+        document.getElementById('cartAddButton').addEventListener('click', function () {
+            trackCatalog('commerce_cart_add', 'sku=LAB-SKU-001; qty=1', {
+                products: productString,
+                events: 'scAdd,event21',
+                vars: { eVar21: 'catalog-browse' }
+            });
+        });
+
+        document.getElementById('checkoutButton').addEventListener('click', function () {
+            trackCatalog('commerce_checkout_start', 'cart=LAB-SKU-001', {
+                products: productString,
+                events: 'scCheckout,event22'
+            });
+        });
+
+        document.getElementById('purchaseButton').addEventListener('click', function () {
+            const purchaseId = createPurchaseId();
+            trackCatalog('commerce_purchase_complete', `purchaseID=${purchaseId}`, {
+                products: productString,
+                events: 'purchase,event23',
+                vars: { purchaseID: purchaseId, currencyCode: 'JPY', eVar22: 'SPRING10' }
+            });
+        });
+
+        document.getElementById('routeAButton').addEventListener('click', function () {
+            document.getElementById('routeState').textContent = 'Current route: /lab/route-a';
+            trackCatalog('spa_virtual_page_view', 'route=/lab/route-a', {
+                vars: { pageName: 'SignalScope Lab: Route A', eVar40: 'route-a', prop40: 'spa-route' },
+                events: 'event40'
+            });
+        });
+
+        document.getElementById('routeBButton').addEventListener('click', function () {
+            document.getElementById('routeState').textContent = 'Current route: /lab/route-b';
+            trackCatalog('spa_virtual_page_view', 'route=/lab/route-b', {
+                vars: { pageName: 'SignalScope Lab: Route B', eVar40: 'route-b', prop40: 'spa-route' },
+                events: 'event40'
+            });
+        });
+
+        document.getElementById('modalButton').addEventListener('click', function () {
+            trackCatalog('spa_modal_open', 'component=pricing-modal', {
+                vars: { eVar41: 'pricing-modal', prop41: 'modal' },
+                events: 'event41'
+            });
+        });
+
+        document.getElementById('consentInButton').addEventListener('click', function () {
+            trackCatalog('consent_status_change', 'consent=opt-in', {
+                vars: { eVar50: 'opt-in', prop50: 'privacy' },
+                events: 'event50'
+            });
+        });
+
+        document.getElementById('consentOutButton').addEventListener('click', function () {
+            trackCatalog('consent_status_change', 'consent=opt-out', {
+                vars: { eVar50: 'opt-out', prop50: 'privacy' },
+                events: 'event50'
+            });
+        });
+
+        document.getElementById('apiErrorButton').addEventListener('click', function () {
+            trackCatalog('api_error_case', 'endpoint=/api/lab; status=500', {
+                vars: { eVar60: '/api/lab', prop60: '500' },
+                events: 'event60'
+            });
+        });
+
+        document.getElementById('formStartButton').addEventListener('click', function () {
+            const email = document.getElementById('leadEmail').value.trim() || 'empty';
+            trackCatalog('form_start', `form=lead; emailState=${email === 'empty' ? 'empty' : 'entered'}`, {
+                vars: { eVar70: 'lead-form', prop70: 'start' },
+                events: 'event70'
+            });
+        });
+
+        document.getElementById('formErrorButton').addEventListener('click', function () {
+            trackCatalog('form_validation_error', 'form=lead; field=email; type=format', {
+                vars: { eVar70: 'lead-form', prop70: 'email-format', list2: 'email,required-consent' },
+                events: 'event71'
+            });
+        });
+
+        document.getElementById('formSubmitButton').addEventListener('click', function () {
+            trackCatalog('form_success', 'form=lead; step=complete', {
+                vars: { eVar70: 'lead-form', prop70: 'success' },
+                events: 'event72'
+            });
+        });
+
+        document.getElementById('signupButton').addEventListener('click', function () {
+            trackCatalog('account_signup_start', 'memberState=prospect', {
+                vars: { eVar80: 'prospect', prop80: 'signup' },
+                events: 'event80'
+            });
+        });
+
+        document.getElementById('loginButton').addEventListener('click', function () {
+            trackCatalog('account_login_success', 'memberState=logged-in; tier=gold', {
+                vars: { eVar80: 'logged-in', eVar81: 'gold', prop80: 'login' },
+                events: 'event81'
+            });
+        });
+
+        document.getElementById('logoutButton').addEventListener('click', function () {
+            trackCatalog('account_logout', 'memberState=logged-out', {
+                vars: { eVar80: 'logged-out', prop80: 'logout' },
+                events: 'event82'
+            });
+        });
+
+        document.querySelectorAll('[data-media-progress]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const progress = button.dataset.mediaProgress;
+                const percent = progress === 'start' ? 0 : progress === 'complete' ? 100 : Number(progress);
+                document.getElementById('mediaMeter').style.width = `${percent}%`;
+                trackCatalog(progress === 'complete' ? 'media_complete' : 'media_progress', `media=demo-clip; progress=${progress}`, {
+                    vars: { eVar90: 'SignalScope Demo Clip', prop90: progress },
+                    events: progress === 'complete' ? 'event91' : 'event90'
+                });
+            });
+        });
+
+        document.querySelectorAll('.activity-cta').forEach(function (button) {
+            button.addEventListener('click', function () {
+                trackCatalog('activity_map_duplicate_cta', `cta=詳しく見る; zone=${button.dataset.zone}`, {
+                    linkObject: button,
+                    vars: { eVar95: button.dataset.zone, prop95: 'duplicate-cta' },
+                    events: 'event95'
+                });
+            });
+        });
+
+        document.getElementById('dataLayerButton').addEventListener('click', function () {
+            const snapshot = {
+                page: {
+                    name: 'SignalScope Lab: AA Implementation Catalog',
+                    type: 'validation',
+                    language: 'ja'
+                },
+                user: {
+                    consent: 'opt-in',
+                    memberState: 'anonymous'
+                },
+                commerce: {
+                    product: 'LAB-SKU-001',
+                    currencyCode: 'JPY'
+                }
+            };
+            window.digitalData = Object.assign({}, window.digitalData, snapshot);
+            document.getElementById('dataLayerOutput').textContent = JSON.stringify(snapshot, null, 2);
+            trackCatalog('data_layer_snapshot', 'digitalData snapshot generated', {
+                vars: { eVar100: 'validation', prop100: 'data-layer' },
+                events: 'event100'
+            });
+        });
+    </script>
+</body>
+
+</html>
