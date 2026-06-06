@@ -262,6 +262,13 @@ h1 {
   border-color: var(--line);
 }
 
+.tracking-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 0;
+}
+
 .asset-row {
   display: flex;
   flex-wrap: wrap;
@@ -356,6 +363,83 @@ h1 {
 
 .callout p {
   color: rgba(255, 255, 255, 0.78);
+}
+
+.tracking-console {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.tracking-status {
+  margin-top: 16px;
+  padding: 12px 14px;
+  color: #124240;
+  background: rgba(0, 111, 107, 0.1);
+  border: 1px solid rgba(0, 111, 107, 0.22);
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.tracking-status.is-warning {
+  color: #6f3d00;
+  background: rgba(188, 122, 0, 0.13);
+  border-color: rgba(188, 122, 0, 0.24);
+}
+
+.tracking-log {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tracking-log li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 12px;
+  padding: 12px 14px;
+  background: #f7f8f8;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.tracking-log strong,
+.tracking-log small {
+  overflow-wrap: anywhere;
+}
+
+.tracking-log span {
+  color: var(--teal);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.tracking-log small {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.mini-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.mini-form label {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.mini-form select {
+  min-height: 44px;
+  width: min(100%, 340px);
+  padding: 8px 10px;
+  color: var(--ink);
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
 }
 
 code {

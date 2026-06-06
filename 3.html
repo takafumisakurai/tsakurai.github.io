@@ -41,14 +41,80 @@
             </section>
 
             <section class="grid">
-                <article class="panel panel-wide">
+                <article class="panel">
                     <h2>Static validation check</h2>
                     <p>AEP &amp; Tracking Validation</p>
                     <a class="button button-secondary" href="4.html">4.html へ進む</a>
                 </article>
+
+                <article class="panel">
+                    <h2>Link type testbench</h2>
+                    <p>Adobe Analytics の link type を分けて検証します。</p>
+                    <div class="tracking-actions">
+                        <button class="button" id="customLinkButton">Custom link</button>
+                        <button class="button button-secondary" id="downloadLinkButton">Download link</button>
+                        <button class="button button-secondary" id="exitLinkButton">Exit link</button>
+                    </div>
+                </article>
+
+                <article class="panel panel-wide">
+                    <h2>フォーム送信イベント検証</h2>
+                    <form class="mini-form" id="scenarioForm">
+                        <label for="scenarioSelect">検証シナリオ</label>
+                        <select id="scenarioSelect">
+                            <option value="support-case">Support case</option>
+                            <option value="campaign-debug">Campaign debug</option>
+                            <option value="tag-release">Tag release</option>
+                        </select>
+                        <button class="button" type="submit">フォーム送信を計測</button>
+                    </form>
+                </article>
+
+                <article class="panel panel-wide tracking-console">
+                    <h2>Adobe Analytics 検証ログ</h2>
+                    <p>Custom / Download / Exit / Form のクリック計測をこのページでまとめて確認できます。</p>
+                    <p class="tracking-status" id="tracking-status">Ready for link type validation.</p>
+                    <ol class="tracking-log" id="tracking-log"></ol>
+                </article>
             </section>
         </main>
     </div>
+
+    <script src="js/validation-tracking.js"></script>
+    <script>
+        document.getElementById('customLinkButton').addEventListener('click', function () {
+            window.SignalScope.trackAdobeLink({
+                linkName: 'lab_custom_action',
+                linkType: 'o',
+                detail: 'static-check'
+            });
+        });
+
+        document.getElementById('downloadLinkButton').addEventListener('click', function () {
+            window.SignalScope.trackAdobeLink({
+                linkName: 'lab_download_asset',
+                linkType: 'd',
+                detail: 'download-link-type'
+            });
+        });
+
+        document.getElementById('exitLinkButton').addEventListener('click', function () {
+            window.SignalScope.trackAdobeLink({
+                linkName: 'lab_exit_link',
+                linkType: 'e',
+                detail: 'exit-link-type'
+            });
+        });
+
+        document.getElementById('scenarioForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            window.SignalScope.trackAdobeLink({
+                linkName: 'lab_form_submit',
+                linkType: 'o',
+                detail: `scenario=${document.getElementById('scenarioSelect').value}`
+            });
+        });
+    </script>
 </body>
 
 </html>

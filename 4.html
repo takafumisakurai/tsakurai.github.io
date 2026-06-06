@@ -45,14 +45,27 @@
                     <h2>カスタムリンクトラッキングサンプル</h2>
                     <p>リンククリックで <code>customlinktracking_test</code> を送信します。</p>
                     <a class="button" href="https://www.tsakurai.com/1.html" onclick="
-                       s.tl(true, 'o', 'customlinktracking_test');
+                       if (window.SignalScope) {
+                         window.SignalScope.trackAdobeLink({ linkName: 'customlinktracking_test', linkType: 'o', detail: 'primary-link' });
+                       } else {
+                         s.tl(true, 'o', 'customlinktracking_test');
+                       }
                      ">
                         Click here
                     </a>
                 </article>
+
+                <article class="panel panel-wide tracking-console">
+                    <h2>カスタムリンク検証ログ</h2>
+                    <p>クリック時に呼び出した linkName を表示します。</p>
+                    <p class="tracking-status" id="tracking-status">Ready for custom link validation.</p>
+                    <ol class="tracking-log" id="tracking-log"></ol>
+                </article>
             </section>
         </main>
     </div>
+
+    <script src="js/validation-tracking.js"></script>
 </body>
 
 </html>

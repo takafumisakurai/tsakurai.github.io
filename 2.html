@@ -57,9 +57,21 @@
 
                 <article class="panel">
                     <h2>画像をクリックすると増えるよ</h2>
+                    <p>Bitcoin 画像クリック時に <code>bitcoin_image_clone_click</code> を送信します。</p>
                     <div class="image-lab" id="img-container">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/800px-Bitcoin.svg.png" alt="Bitcoinロゴ" width="100" id="bitcoin-img">
                     </div>
+                </article>
+
+                <article class="panel panel-wide tracking-console">
+                    <h2>時刻・画像状態の計測検証</h2>
+                    <p>時刻表示や画像数の状態を任意のカスタムリンクとして送信できます。</p>
+                    <div class="tracking-actions">
+                        <button class="button" id="clockTrackButton">時刻ステータス送信</button>
+                        <button class="button button-secondary" id="imageStatusButton">画像数ステータス送信</button>
+                    </div>
+                    <p class="tracking-status" id="tracking-status">Ready for time and image tracking validation.</p>
+                    <ol class="tracking-log" id="tracking-log"></ol>
                 </article>
 
                 <article class="panel panel-wide">
@@ -73,6 +85,7 @@
         </main>
     </div>
 
+    <script src="js/validation-tracking.js"></script>
     <script>
         function updateClocks() {
             // 現在の日時を取得（ローカル時刻）
@@ -103,10 +116,31 @@
             img.style.cursor = "pointer";
             img.onclick = addImage; // 新しい画像にもクリックイベントを追加
             container.appendChild(img);
+            window.SignalScope.trackAdobeLink({
+                linkName: 'bitcoin_image_clone_click',
+                linkType: 'o',
+                detail: `imageCount=${container.querySelectorAll('img').length}`
+            });
         }
 
         // 最初の画像にもクリックイベントを追加
         document.getElementById('bitcoin-img').onclick = addImage;
+
+        document.getElementById('clockTrackButton').addEventListener('click', function () {
+            window.SignalScope.trackAdobeLink({
+                linkName: 'clock_status_snapshot',
+                linkType: 'o',
+                detail: `jst=${document.getElementById('jst').textContent}; utc=${document.getElementById('utc').textContent}`
+            });
+        });
+
+        document.getElementById('imageStatusButton').addEventListener('click', function () {
+            window.SignalScope.trackAdobeLink({
+                linkName: 'image_count_status',
+                linkType: 'o',
+                detail: `imageCount=${container.querySelectorAll('img').length}`
+            });
+        });
     </script>
 </body>
 
