@@ -1,52 +1,170 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>カスタムリンクのスクロール検証サイト</title>
+    <title>Scroll Signal Lab | カスタムリンクのスクロール検証サイト</title>
+
     <!-- Adobe Launch -->
     <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
     <!-- End Adobe Launch -->
+
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <!-- コンテンツ１ -->
-    <div class="scroll-trigger" data-section="contents_1"></div>
-    <section id="section-1">
-        <h2>コンテンツ 1</h2>
-        <p>ここにコンテンツ１のテキストや画像などを配置します。</p>
-    </section>
+    <div class="scroll-meter" aria-hidden="true">
+        <span id="scroll-progress"></span>
+    </div>
 
-    <!-- コンテンツ２ -->
-    <div class="scroll-trigger" data-section="contents_2"></div>
-    <section id="section-2">
-        <h2>コンテンツ 2</h2>
-        <p>ここにコンテンツ２のテキストや画像などを配置します。</p>
-    </section>
+    <header class="site-header">
+        <a class="brand" href="../sitemap_with_titles.html">
+            <span class="brand-mark">S</span>
+            <span class="brand-copy">
+                <span class="brand-title">SignalScope Lab</span>
+                <span class="brand-subtitle">Scroll Custom Link Validation</span>
+            </span>
+        </a>
+        <nav class="page-nav" aria-label="関連ページ">
+            <a href="../4.html">4.html</a>
+            <a href="../5.html">5.html</a>
+            <a href="../sitemap_with_titles.html">Sitemap</a>
+        </nav>
+    </header>
 
-    <!-- コンテンツ３ -->
-    <div class="scroll-trigger" data-section="contents_3"></div>
-    <section id="section-3">
-        <h2>コンテンツ 3</h2>
-        <p>ここにコンテンツ３のテキストや画像などを配置します。</p>
-    </section>
+    <main>
+        <section class="hero" id="top">
+            <div class="hero-copy">
+                <p class="eyebrow">Customlink / Scroll AA Validation</p>
+                <h1>Scroll Signal Lab</h1>
+                <p class="lead">スクロール到達ごとに Adobe Analytics のカスタムリンクを送信する検証ページです。</p>
 
-    <!-- コンテンツ４ -->
-    <div class="scroll-trigger" data-section="contents_4"></div>
-    <section id="section-4">
-        <h2>コンテンツ 4</h2>
-        <p>ここにコンテンツ４のテキストや画像などを配置します。</p>
-    </section>
+                <dl class="signal-spec" aria-label="計測仕様">
+                    <div>
+                        <dt>linkType</dt>
+                        <dd>o</dd>
+                    </div>
+                    <div>
+                        <dt>event</dt>
+                        <dd>event120</dd>
+                    </div>
+                    <div>
+                        <dt>mode</dt>
+                        <dd>once per checkpoint</dd>
+                    </div>
+                </dl>
 
-    <!-- コンテンツ５ -->
-    <div class="scroll-trigger" data-section="contents_5"></div>
-    <section id="section-5">
-        <h2>コンテンツ 5</h2>
-        <p>ここにコンテンツ５のテキストや画像などを配置します。</p>
-    </section>
+                <a class="hero-button" href="#checkpoint-1">Start scroll test</a>
+            </div>
+
+            <figure class="hero-visual">
+                <img src="data:image/jpeg;base64,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" width="620" height="330" alt="スクロール中のページと分析シグナルを表したビジュアル">
+            </figure>
+        </section>
+
+        <section class="console" aria-labelledby="console-title">
+            <div>
+                <p class="eyebrow">Live Console</p>
+                <h2 id="console-title">Adobe Analytics 送信ログ</h2>
+                <p>到達したチェックポイントの linkName と送信状態を表示します。</p>
+            </div>
+            <div class="console-panel">
+                <p class="tracking-status" id="tracking-status">Ready for scroll custom link validation.</p>
+                <ol class="tracking-log" id="tracking-log"></ol>
+            </div>
+        </section>
+
+        <section class="checkpoint scroll-trigger" id="checkpoint-1" data-section="contents_1"
+            data-label="Hero Overview" data-depth="20" data-link-name="custom_scroll_contents_1">
+            <div class="checkpoint-meta">
+                <span>Checkpoint 01</span>
+                <strong>20%</strong>
+            </div>
+            <div class="checkpoint-copy">
+                <h2>Hero Overview</h2>
+                <p>最初の到達点です。ファーストビューを抜けた時点のスクロール接触をカスタムリンクとして送信します。</p>
+            </div>
+            <div class="signal-card" aria-label="送信する値">
+                <span>linkName</span>
+                <strong>custom_scroll_contents_1</strong>
+                <span>eVar120 / prop120</span>
+                <strong>Hero Overview / contents_1</strong>
+            </div>
+        </section>
+
+        <section class="checkpoint scroll-trigger" id="checkpoint-2" data-section="contents_2"
+            data-label="Spec Review" data-depth="40" data-link-name="custom_scroll_contents_2">
+            <div class="checkpoint-meta">
+                <span>Checkpoint 02</span>
+                <strong>40%</strong>
+            </div>
+            <div class="checkpoint-copy">
+                <h2>Spec Review</h2>
+                <p>計測仕様の理解ゾーンです。スクロールが進むたびに個別の linkName で到達を識別できます。</p>
+            </div>
+            <div class="signal-card" aria-label="送信する値">
+                <span>linkName</span>
+                <strong>custom_scroll_contents_2</strong>
+                <span>eVar121 / prop121</span>
+                <strong>40 / contents_2</strong>
+            </div>
+        </section>
+
+        <section class="checkpoint scroll-trigger" id="checkpoint-3" data-section="contents_3"
+            data-label="Signal Middle" data-depth="60" data-link-name="custom_scroll_contents_3">
+            <div class="checkpoint-meta">
+                <span>Checkpoint 03</span>
+                <strong>60%</strong>
+            </div>
+            <div class="checkpoint-copy">
+                <h2>Signal Middle</h2>
+                <p>中間地点の検証です。送信済みのチェックポイントは同一ページビュー内で重複送信しません。</p>
+            </div>
+            <div class="signal-card" aria-label="送信する値">
+                <span>linkName</span>
+                <strong>custom_scroll_contents_3</strong>
+                <span>event</span>
+                <strong>event120</strong>
+            </div>
+        </section>
+
+        <section class="checkpoint scroll-trigger" id="checkpoint-4" data-section="contents_4"
+            data-label="Deep Engagement" data-depth="80" data-link-name="custom_scroll_contents_4">
+            <div class="checkpoint-meta">
+                <span>Checkpoint 04</span>
+                <strong>80%</strong>
+            </div>
+            <div class="checkpoint-copy">
+                <h2>Deep Engagement</h2>
+                <p>深い閲覧到達の検証です。Adobe Analytics 側ではカスタムリンク名と depth 値で分類できます。</p>
+            </div>
+            <div class="signal-card" aria-label="送信する値">
+                <span>linkName</span>
+                <strong>custom_scroll_contents_4</strong>
+                <span>eVar122 / prop122</span>
+                <strong>customlink/custom_scroll.html / scroll-validation</strong>
+            </div>
+        </section>
+
+        <section class="checkpoint scroll-trigger final-checkpoint" id="checkpoint-5" data-section="contents_5"
+            data-label="Completion" data-depth="100" data-link-name="custom_scroll_contents_5">
+            <div class="checkpoint-meta">
+                <span>Checkpoint 05</span>
+                <strong>100%</strong>
+            </div>
+            <div class="checkpoint-copy">
+                <h2>Completion</h2>
+                <p>最後の到達点です。ページ最下部まで到達した閲覧を <code>custom_scroll_contents_5</code> で送信します。</p>
+            </div>
+            <div class="signal-card" aria-label="送信する値">
+                <span>linkName</span>
+                <strong>custom_scroll_contents_5</strong>
+                <span>completion</span>
+                <strong>100%</strong>
+            </div>
+        </section>
+    </main>
 
     <script src="scroll-tracker.js"></script>
 </body>
