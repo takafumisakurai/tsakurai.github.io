@@ -43,9 +43,9 @@
 
             <section class="grid">
                 <article class="panel panel-wide">
-                    <h2>4.html からの遷移パラメータ</h2>
-                    <p>4.html のナビまたは「5.html へ進む」から遷移すると、URL に <code>?codex=6f6c85b</code> を付与します。</p>
-                    <p class="route-state" id="codexParamState">Current codex parameter: loading</p>
+                    <h2>ページ遷移計測パラメータ</h2>
+                    <p>1.html から 5.html の内部リンクには、Adobe Analytics で遷移元、遷移先、リンク位置を見られるように <code>aa_nav</code>、<code>aa_from</code>、<code>aa_to</code>、<code>aa_slot</code> を付与します。4.html から 5.html への遷移では <code>codex=6f6c85b</code> も保持します。</p>
+                    <p class="route-state" id="transitionParamState">Current transition parameters: loading</p>
                 </article>
 
                 <article class="panel">
@@ -192,8 +192,14 @@
     <script src="js/validation-tracking.js"></script>
     <script>
         const productString = ';LAB-SKU-001;1;19800';
-        const codexParam = new URLSearchParams(window.location.search).get('codex') || 'not set';
-        document.getElementById('codexParamState').textContent = `Current codex parameter: ${codexParam}`;
+        const pageParams = new URLSearchParams(window.location.search);
+        const transitionParamKeys = ['aa_nav', 'aa_from', 'aa_to', 'aa_slot', 'codex'];
+        const transitionParamText = transitionParamKeys
+            .map(function (key) {
+                return `${key}=${pageParams.get(key) || 'not set'}`;
+            })
+            .join('; ');
+        document.getElementById('transitionParamState').textContent = `Current transition parameters: ${transitionParamText}`;
 
         function createPurchaseId() {
             return `LAB-${Date.now()}`;
