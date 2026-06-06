@@ -442,6 +442,99 @@ h1 {
   font: inherit;
 }
 
+.mini-form input,
+.scenario-stack input {
+  min-height: 44px;
+  width: min(100%, 340px);
+  padding: 8px 10px;
+  color: var(--ink);
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.scenario-stack,
+.media-card {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.product-mini {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 16px;
+  background: #f7f8f8;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.product-mini strong,
+.product-mini span,
+.route-state {
+  display: block;
+}
+
+.product-mini span,
+.route-state {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.route-state {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  background: #f7f8f8;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.media-card {
+  padding: 16px;
+  background: #f7f8f8;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.meter {
+  overflow: hidden;
+  height: 12px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.meter span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--rose));
+  transition: width 180ms ease;
+}
+
+.zone-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.data-layer-output {
+  overflow: auto;
+  min-height: 120px;
+  margin: 16px 0 0;
+  padding: 14px;
+  color: var(--ink);
+  background: #f7f8f8;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
 code {
   overflow-wrap: anywhere;
   padding: 2px 6px;
@@ -486,6 +579,10 @@ code {
   }
 
   .time-row {
+    grid-template-columns: 1fr;
+  }
+
+  .zone-row {
     grid-template-columns: 1fr;
   }
 }
