@@ -42,6 +42,12 @@
             </section>
 
             <section class="grid">
+                <article class="panel panel-wide">
+                    <h2>4.html からの遷移パラメータ</h2>
+                    <p>4.html のナビまたは「5.html へ進む」から遷移すると、URL に <code>?codex=6f6c85b</code> を付与します。</p>
+                    <p class="route-state" id="codexParamState">Current codex parameter: loading</p>
+                </article>
+
                 <article class="panel">
                     <h2>実装モード切替</h2>
                     <p>AppMeasurement / Web SDK どちらの設計で検証しているかをログに残します。</p>
@@ -186,6 +192,8 @@
     <script src="js/validation-tracking.js"></script>
     <script>
         const productString = ';LAB-SKU-001;1;19800';
+        const codexParam = new URLSearchParams(window.location.search).get('codex') || 'not set';
+        document.getElementById('codexParamState').textContent = `Current codex parameter: ${codexParam}`;
 
         function createPurchaseId() {
             return `LAB-${Date.now()}`;
