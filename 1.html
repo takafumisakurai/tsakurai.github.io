@@ -49,7 +49,7 @@
                 <article class="panel">
                     <h2>Dogecoin ロゴとボタン</h2>
                     <div class="asset-row">
-                        <img class="logo-preview" src="https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png" alt="Dogecoin Logo" width="200">
+                        <img class="logo-preview" id="dogecoinLogo" src="https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png" alt="Dogecoin Logo" width="200" role="button" tabindex="0" aria-label="Dogecoin ロゴのカスタムリンクを送信">
                         <div>
                             <button class="button" id="myButton">クリックしてね！</button>
                             <p class="metric">
@@ -86,6 +86,14 @@
             count++;
             document.getElementById('count').textContent = count;
             sendDogecoinCustomLink();
+        });
+
+        document.getElementById('dogecoinLogo').addEventListener('click', sendDogecoinCustomLink);
+        document.getElementById('dogecoinLogo').addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                sendDogecoinCustomLink();
+            }
         });
     </script>
 </body>
