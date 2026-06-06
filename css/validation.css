@@ -64,6 +64,24 @@ img {
   text-decoration: none;
 }
 
+.brand-copy {
+  display: grid;
+  gap: 1px;
+}
+
+.brand-title {
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+.brand-subtitle {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
 .brand-mark {
   display: grid;
   width: 38px;
