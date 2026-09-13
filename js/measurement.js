@@ -159,19 +159,23 @@
   }
   function consentUI() {
     var style = d.createElement('style');
-    style.textContent = '#measurement-consent{position:fixed;z-index:10000;bottom:1rem;left:1rem;right:1rem;max-width:42rem;padding:1.2rem;border:1px solid #64748b;border-radius:12px;background:#111827;color:#fff;font:15px/1.5 system-ui;box-shadow:0 5px 25px #0005}#measurement-consent[hidden]{display:none}#measurement-consent p{margin:0 0 .8rem}#measurement-consent button,#measurement-preferences{font:inherit;padding:.5rem .8rem;border:1px solid #64748b;border-radius:6px;margin-right:.5rem;background:#fff;color:#111827;cursor:pointer}#measurement-preferences{display:block;margin:1rem}';
+    style.textContent = '#measurement-consent{position:fixed;z-index:10000;bottom:1rem;left:1rem;right:1rem;max-width:42rem;padding:1.2rem;border:1px solid #64748b;border-radius:12px;background:#111827;color:#fff;font:15px/1.5 system-ui;box-shadow:0 5px 25px #0005}#measurement-consent[hidden]{display:none}#measurement-consent p{margin:0 0 .8rem}#measurement-consent button,#measurement-choice{font:inherit;padding:.5rem .8rem;border:1px solid #64748b;border-radius:6px;margin-right:.5rem;background:#fff;color:#111827;cursor:pointer}#measurement-choice{display:block;margin:1rem 0}';
     d.head.appendChild(style);
     var panel = d.createElement('aside');
-    panel.id = 'measurement-consent'; panel.setAttribute('aria-label','Analytics preferences'); panel.hidden = consent !== 'pending';
+    panel.id = 'measurement-consent'; panel.setAttribute('aria-label','Analytics consent'); panel.hidden = consent !== 'pending';
     var p = d.createElement('p'); p.textContent = 'With your permission, Adobe Analytics measures page views and interactions, and Adobe Target tests page variations. Your choice is saved for 180 days. The site works with measurement turned off.';
     panel.appendChild(p);
     [['Allow measurement','granted'],['Decline','denied']].forEach(function (pair) {
       var button = d.createElement('button'); button.type = 'button'; button.textContent = pair[0]; button.addEventListener('click',function(){setConsent(pair[1]);}); panel.appendChild(button);
     });
     var link = d.createElement('a'); link.href='/privacy.html'; link.textContent='Privacy details'; link.style.color='#bfdbfe'; panel.appendChild(link);
-    var prefs = d.createElement('button'); prefs.id='measurement-preferences'; prefs.type='button'; prefs.textContent='Analytics preferences';
-    prefs.addEventListener('click',function(){panel.hidden=false;panel.querySelector('button').focus();});
-    d.body.appendChild(panel); d.body.appendChild(prefs);
+    d.body.appendChild(panel);
+    // Choice management belongs on the privacy page, not every site's footer.
+    if (location.pathname === '/privacy.html') {
+      var choice = d.createElement('button'); choice.id='measurement-choice'; choice.type='button'; choice.textContent='Change measurement choice';
+      choice.addEventListener('click',function(){panel.hidden=false;panel.querySelector('button').focus();});
+      d.querySelector('main').appendChild(choice);
+    }
     d.documentElement.dataset.measurementConsent = consent;
   }
   function interactions() {
