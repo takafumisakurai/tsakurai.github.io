@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Cookie 読み取りサンプル</title>
     <!-- Adobe Launch タグ -->
-    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <script src="/js/measurement.js"></script>
     <style>
         body {
             font-family: sans-serif;
@@ -22,7 +22,7 @@
 
 <body>
     <h1>Cookie 読み取りサンプル</h1>
-    <p>以下に読み取った Cookie 情報を JSON 形式で表示します。</p>
+    <p>Cookie 名だけを表示します。値はマスクされ、計測には送信されません。</p>
     <pre id="cookie-output">読み取り中...</pre>
 
     <script>
@@ -36,7 +36,7 @@
                 const [rawKey, rawVal] = entry.split('=');
                 const key = rawKey.trim();
                 const val = decodeURIComponent(rawVal);
-                obj[key] = val;
+                obj[key] = '[masked]';
                 return obj;
             }, {});
 
@@ -49,7 +49,7 @@
         }
 
         // コンソールにも出力
-        console.log('読み取った Cookie:', cookies);
+        // Cookie values are never logged.
     </script>
 </body>
 

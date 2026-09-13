@@ -6,7 +6,7 @@
     <title>PDF Embed API 最小サンプル</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <!-- Adobe Launch -->
-    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <script src="/js/measurement.js"></script>
     <style>
         html,
         body {
@@ -23,14 +23,17 @@
 </head>
 
 <body>
-    <div id="adobe-dc-view"></div>
-    <script src="https://acrobatservices.adobe.com/view-sdk/viewer.js"></script>
+    <button type="button" id="open-pdf">Open sample PDF with Adobe viewer</button><p id="pdf-status" role="status"></p><div id="adobe-dc-view"></div>
+    <script src="/js/pdf-measurement.js"></script>
     <script>
-        document.addEventListener("adobe_dc_view_sdk.ready", function () {
+        document.getElementById("open-pdf").addEventListener("click", async function () {
+            try { await window.tsPDF.load(); } catch (_) { document.getElementById("pdf-status").textContent="PDF viewer unavailable"; return; }
             const view = new AdobeDC.View({
                 clientId: "fec3f02aaf1c480e9efae98d74f8540c",
-                divId: "adobe-dc-view"
+                divId: "adobe-dc-view",
+                sendAutoPDFAnalytics: false
             });
+            window.tsPDF.listen(view, "bodea-brochure");
             view.previewFile(
                 {
                     content: {

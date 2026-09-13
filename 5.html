@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/validation.css">
 
     <!-- Adobe Launch -->
-    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <script src="/js/measurement.js"></script>
     <!-- End Adobe Launch -->
 </head>
 
@@ -50,10 +50,10 @@
 
                 <article class="panel">
                     <h2>実装モード切替</h2>
-                    <p>AppMeasurement / Web SDK どちらの設計で検証しているかをログに残します。</p>
+                    <p>このページは AppMeasurement の検証専用です。Web SDK ラベルは SDK の切替を行いません。</p>
                     <div class="tracking-actions" role="group" aria-label="Implementation mode">
                         <button class="button" id="modeAppMeasurement">AppMeasurement</button>
-                        <button class="button button-secondary" id="modeWebSdk">Web SDK style</button>
+                        <button class="button button-secondary" id="modeWebSdk">Web SDK label only</button>
                     </div>
                 </article>
 
@@ -181,7 +181,7 @@
 
                 <article class="panel panel-wide tracking-console">
                     <h2>Expected Beacon Viewer</h2>
-                    <p>クリックごとの linkName、link type、想定 events / eVars / products を表示します。</p>
+                    <p>操作名と計測APIの呼び出し状態を表示します。実際の通信・レポート反映は別途確認してください。入力内容は画面内の検証表示だけに使い、送信しません。</p>
                     <p class="tracking-status" id="tracking-status">Ready for AA implementation catalog validation.</p>
                     <ol class="tracking-log" id="tracking-log"></ol>
                 </article>
@@ -202,7 +202,12 @@
         document.getElementById('transitionParamState').textContent = `Current transition parameters: ${transitionParamText}`;
 
         function createPurchaseId() {
-            return `LAB-${Date.now()}`;
+            var key = 'signalscope.fixture-order.v1';
+            try {
+                var saved = sessionStorage.getItem(key);
+                if (!saved) { saved = 'LAB-' + Date.now(); sessionStorage.setItem(key, saved); }
+                return saved;
+            } catch (_) { return 'LAB-current-page'; }
         }
 
         function trackCatalog(linkName, detail, config) {
@@ -304,17 +309,11 @@
         });
 
         document.getElementById('consentInButton').addEventListener('click', function () {
-            trackCatalog('consent_status_change', 'consent=opt-in', {
-                vars: { eVar50: 'opt-in', prop50: 'privacy' },
-                events: 'event50'
-            });
+            window.tsMeasurement.setConsent("granted");
         });
 
         document.getElementById('consentOutButton').addEventListener('click', function () {
-            trackCatalog('consent_status_change', 'consent=opt-out', {
-                vars: { eVar50: 'opt-out', prop50: 'privacy' },
-                events: 'event50'
-            });
+            window.tsMeasurement.setConsent("denied");
         });
 
         document.getElementById('apiErrorButton').addEventListener('click', function () {
@@ -348,21 +347,21 @@
 
         document.getElementById('signupButton').addEventListener('click', function () {
             trackCatalog('account_signup_start', 'memberState=prospect', {
-                vars: { eVar80: 'prospect', prop80: 'signup' },
+                vars: { eVar80: 'prospect', eVar130: 'signup' },
                 events: 'event80'
             });
         });
 
         document.getElementById('loginButton').addEventListener('click', function () {
             trackCatalog('account_login_success', 'memberState=logged-in; tier=gold', {
-                vars: { eVar80: 'logged-in', eVar81: 'gold', prop80: 'login' },
+                vars: { eVar80: 'logged-in', eVar81: 'gold', eVar130: 'login' },
                 events: 'event81'
             });
         });
 
         document.getElementById('logoutButton').addEventListener('click', function () {
             trackCatalog('account_logout', 'memberState=logged-out', {
-                vars: { eVar80: 'logged-out', prop80: 'logout' },
+                vars: { eVar80: 'logged-out', eVar130: 'logout' },
                 events: 'event82'
             });
         });
@@ -373,7 +372,7 @@
                 const percent = progress === 'start' ? 0 : progress === 'complete' ? 100 : Number(progress);
                 document.getElementById('mediaMeter').style.width = `${percent}%`;
                 trackCatalog(progress === 'complete' ? 'media_complete' : 'media_progress', `media=demo-clip; progress=${progress}`, {
-                    vars: { eVar90: 'SignalScope Demo Clip', prop90: progress },
+                    vars: { eVar90: 'SignalScope Demo Clip', eVar140: progress },
                     events: progress === 'complete' ? 'event91' : 'event90'
                 });
             });
@@ -383,7 +382,7 @@
             button.addEventListener('click', function () {
                 trackCatalog('activity_map_duplicate_cta', `cta=詳しく見る; zone=${button.dataset.zone}`, {
                     linkObject: button,
-                    vars: { eVar95: button.dataset.zone, prop95: 'duplicate-cta' },
+                    vars: { eVar95: button.dataset.zone, eVar145: 'duplicate-cta' },
                     events: 'event95'
                 });
             });
@@ -408,7 +407,7 @@
             window.digitalData = Object.assign({}, window.digitalData, snapshot);
             document.getElementById('dataLayerOutput').textContent = JSON.stringify(snapshot, null, 2);
             trackCatalog('data_layer_snapshot', 'digitalData snapshot generated', {
-                vars: { eVar100: 'validation', prop100: 'data-layer' },
+                vars: { eVar100: 'validation', eVar150: 'data-layer' },
                 events: 'event100'
             });
         });

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/validation.css">
 
     <!-- Adobe Launch -->
-    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <script src="/js/measurement.js"></script>
     <!-- End Adobe Launch -->
 </head>
 
@@ -48,8 +48,8 @@
                     <a class="button" href="https://www.tsakurai.com/1.html" onclick="
                        if (window.SignalScope) {
                          window.SignalScope.trackAdobeLink({ linkName: 'customlinktracking_test', linkType: 'o', detail: 'primary-link' });
-                       } else {
-                         s.tl(true, 'o', 'customlinktracking_test');
+                       } else if (window.tsMeasurement) {
+                         window.tsMeasurement.track('customlinktracking_test', {scenario:'customlinktracking_test'});
                        }
                      ">
                         Click here
