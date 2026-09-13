@@ -130,6 +130,7 @@
         : local && stage !== 'production'
           ? 'https://assets.adobedtm.com/ff8e968de530/5e835208803b/launch-ENda93a2d5c4c846e49f53c387a329297a-development.min.js'
           : 'https://assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js';
+      script.src += '?ts_release=' + VERSION;
       script.async = true;
       script.onerror = function () { queue = []; d.documentElement.dataset.measurementStatus = 'unavailable'; };
       d.head.appendChild(script);
@@ -137,7 +138,7 @@
     // Explicit diagnostics only; no IDs or cookies are shown. Failure must not block measurement.
     if (new URLSearchParams(location.search).get('ts_debug') === '1' && !w.tsTransportDebug) {
       var debug = d.createElement('script');
-      debug.src = '/js/measurement-debug.js'; debug.onload = startLibrary; debug.onerror = startLibrary;
+      debug.src = '/js/measurement-debug.js?ts_release=' + VERSION; debug.onload = startLibrary; debug.onerror = startLibrary;
       d.head.appendChild(debug);
     } else startLibrary();
   }
