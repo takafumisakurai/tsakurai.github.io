@@ -26,7 +26,7 @@ function start(){
   if(started||state!=='granted') return; started=true; status('Web SDKを読み込んでいます');
   // Register the SDK queue before loading the official library; no SDK is loaded without consent.
   w.__alloyNS=w.__alloyNS||[];w.__alloyNS.push('alloy');w.alloy=function(){var args=arguments;return new Promise(function(resolve,reject){w.alloy.q.push([resolve,reject,args]);});};w.alloy.q=[];
-  var debug=new URLSearchParams(location.search).get('ts_debug')==='1' ? loadScript('/js/measurement-debug.js?v=20260913-websdk2').catch(function(){}) : Promise.resolve();
+  var debug=new URLSearchParams(location.search).get('ts_debug')==='1' ? loadScript('/js/measurement-debug.js?v=20260913-websdk3').catch(function(){}) : Promise.resolve();
   debug.then(function(){return loadScript('https://cdn1.adoberesources.net/alloy/2.35.1/alloy.min.js');}).then(function(){
     return w.alloy('configure',{orgId:'709F1DFC5B75373A0A495C41@AdobeOrg',datastreamId:stream,defaultConsent:'pending',clickCollectionEnabled:false,context:[],onBeforeEventSend:sanitize});
   }).then(function(){return consent(state==='granted'?'in':'out');}).then(function(){
