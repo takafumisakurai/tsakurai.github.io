@@ -65,3 +65,11 @@ Mock tests and a successful library build do not prove successful HTTP collectio
 ## Explicit transport diagnostics
 
 After consent, `?ts_debug=1` loads a first-party diagnostic panel on www.tsakurai.com or localhost only. It observes the existing SDK requests without generating tracking calls of its own. Only allowlisted measurement dimensions, fixed product fixtures, host/path and transport outcome are displayed. ECIDs, cookies and raw URLs are omitted; purchase IDs are replaced with a presence marker. Sanitized records are kept in sessionStorage for the current browser tab so exit-link debugging can survive navigation. `image-load-success` proves that the collection pixel loaded; `beacon-queued` only proves browser acceptance, and neither proves report processing. On localhost, `ts_stage=staging` or `ts_stage=production` selects the corresponding library; the hostname routing still sends these visits to the Lab suite.
+
+## Isolated Web SDK Lab
+
+`/lab/web-sdk.html` loads official Alloy 2.35.1 only after the shared 180-day consent preference is granted. It does not load Launch, AppMeasurement or Target. Datastream `e7f579e5-810e-4ca5-916d-2b9010378329` has only Adobe Analytics enabled, with destination `egeo1xxtsakurailab`. No XDM schema or AEP dataset is required for the Analytics data object mapping.
+
+Automatic click collection and context collection are disabled. Fixed page view (`event151`) and button click (`event160`, custom link type `o`) use `data.__adobe.analytics`. All hits carry synthetic=true and environment=qa. The final callback strips any URL/referrer queries and prevents events after withdrawal. `?ts_debug=1` adds the sanitized HTTP transport diagnostic; successful Edge response does not prove processed reporting.
+
+Official references: https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/data-var-mapping and https://experienceleague.adobe.com/en/docs/experience-platform/collection/js/commands/setconsent
