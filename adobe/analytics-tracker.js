@@ -5,6 +5,9 @@ var isPortfolio = /^(\/|\/index\.html)$/.test(sitePath);
 var qa = new URLSearchParams(location.search).get('ts_qa') === '1';
 var isProduction = location.hostname === 'www.tsakurai.com' && _satellite.environment.stage === 'production' && !qa;
 s.sa(isPortfolio && isProduction ? 'tsisakurai' : 'egeo1xxtsakurailab');
+// Adobe tenant verified in Experience Cloud organization profile. Always use TLS.
+s.trackingServer = s.trackingServerSecure = 'takafumisakurai.data.adobedc.net';
+s.ssl = true;
 s.usePlugins = true;
 s.useLinkTrackSessionStorage = false;
 s.trackDownloadLinks = false;
@@ -25,6 +28,12 @@ s.doPlugins = function (tracker) {
   tracker.contextData['ts.environment'] = qa ? 'qa' : _satellite.environment.stage;
   tracker.contextData['ts.synthetic'] = !isProduction || !isPortfolio ? 'true' : 'false';
   tracker.contextData['ts.measurement_version'] = '2026-09-13.1';
-  if (tracker.contextData['ts.event_name'] === 'page_view' && window.tsMeasurement) window.tsMeasurement.pageReady();
+  if (tracker.contextData['ts.event_name'] === 'page_view') {
+    // Reapply after AppMeasurement asynchronous enrichment, before serialization.
+    var dimensions = {151:'page_group',152:'event_name',153:'section',154:'placement',155:'destination',156:'depth',157:'measurement_version',158:'synthetic',159:'document_id',160:'route',161:'environment',162:'pdf_event'};
+    Object.keys(dimensions).forEach(function (n) { tracker['eVar' + n] = tracker.contextData['ts.' + dimensions[n]] || ''; });
+    tracker.events = 'event151';
+    if (window.tsMeasurement) window.tsMeasurement.pageReady();
+  }
   for (var n = 76; n <= 250; n++) delete tracker['prop' + n];
 };
