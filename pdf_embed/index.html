@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Adobe PDF Embed API Playground</title>
     <!-- Adobe Launch -->
-    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
-    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script src="/js/measurement.js"></script>
+    <script src="/js/pdf-measurement.js"></script>
     <style>
         :root {
             --bg: #0f172a;
@@ -361,11 +361,13 @@
                 warn.hidden = true;
             }
 
+            try { await window.tsPDF.load(); } catch (_) { statusEl.textContent='PDF viewer could not load. Try again later.'; return; }
             // 既存インスタンスがあれば破棄（SDKは複数回の preview を許容するがクリーンに）
             adobeDCView = new AdobeDC.View({
                 clientId,
                 divId: 'adobe-dc-view',
-                locale: 'ja-JP'
+                locale: 'ja-JP',
+                sendAutoPDFAnalytics: false
             });
 
             const viewerConfig = {
@@ -378,7 +380,7 @@
             };
 
             statusEl.textContent = '読み込み中…';
-            log('previewFile を呼び出し', { pdfUrl, viewerConfig });
+            log('previewFile を呼び出し', { viewerConfig });
 
             try {
                 const viewerPromise = adobeDCView.previewFile({
@@ -386,14 +388,7 @@
                     metaData: { fileName: fileNameFromUrl(pdfUrl) }
                 }, viewerConfig);
 
-                // イベント購読（閲覧分析など）
-                adobeDCView.registerCallback(
-                    AdobeDC.View.Enum.CallbackType.EVENT_LISTENER,
-                    function (event) {
-                        log(`イベント: ${event.type}`, event.data);
-                    },
-                    { enablePDFAnalytics: true }
-                );
+                window.tsPDF.listen(adobeDCView, 'playground-document');
 
                 await viewerPromise;
                 statusEl.textContent = '表示完了';
@@ -430,7 +425,7 @@
             const pdf = p.get('pdf');
             if (cid) el('client-id').value = cid;
             if (pdf) el('pdf-url').value = pdf;
-            if (cid && pdf) render();
+            // Rendering requires an explicit click, even with URL parameters.
             if (!cid) warn.hidden = false;
         });
     </script>

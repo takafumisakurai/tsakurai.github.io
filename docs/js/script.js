@@ -7,8 +7,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     yearEl.textContent = year;
   }
-
-
-    }
-  }
 });

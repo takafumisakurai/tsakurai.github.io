@@ -13,8 +13,8 @@
     const status = document.getElementById("tracking-status");
     if (status) {
       status.textContent = entry.sent
-        ? `${entry.time} sent: ${entry.linkName}`
-        : `${entry.time} not sent: ${entry.linkName} (${entry.reason})`;
+        ? `${entry.time} SDK called: ${entry.linkName}`
+        : `${entry.time} not SDK called: ${entry.linkName} (${entry.reason})`;
       status.classList.toggle("is-warning", !entry.sent);
     }
 
@@ -44,87 +44,9 @@
     }
   }
 
-  function normalizeList(value) {
-    if (!value) {
-      return [];
-    }
-    if (Array.isArray(value)) {
-      return value;
-    }
-    return String(value)
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean);
-  }
-
-  function applyAppMeasurementVariables(config) {
-    if (!window.s) {
-      return function () {};
-    }
-
-    const variableMap = Object.assign({}, config.vars || {});
-    if (config.events) {
-      variableMap.events = config.events;
-    }
-    if (config.products) {
-      variableMap.products = config.products;
-    }
-
-    const touched = {};
-    Object.keys(variableMap).forEach((key) => {
-      touched[key] = window.s[key];
-      window.s[key] = variableMap[key];
-    });
-
-    const previousLinkTrackVars = window.s.linkTrackVars;
-    const previousLinkTrackEvents = window.s.linkTrackEvents;
-    const linkTrackVars = new Set(normalizeList(window.s.linkTrackVars));
-
-    Object.keys(variableMap).forEach((key) => linkTrackVars.add(key));
-    normalizeList(config.linkTrackVars).forEach((key) => linkTrackVars.add(key));
-
-    if (linkTrackVars.size > 0) {
-      window.s.linkTrackVars = Array.from(linkTrackVars).join(",");
-    }
-
-    const linkTrackEvents = new Set(normalizeList(window.s.linkTrackEvents));
-    normalizeList(config.events).forEach((key) => linkTrackEvents.add(key));
-    normalizeList(config.linkTrackEvents).forEach((key) => linkTrackEvents.add(key));
-
-    if (linkTrackEvents.size > 0) {
-      window.s.linkTrackEvents = Array.from(linkTrackEvents).join(",");
-    }
-
-    return function restoreVariables() {
-      Object.keys(touched).forEach((key) => {
-        if (typeof touched[key] === "undefined") {
-          delete window.s[key];
-        } else {
-          window.s[key] = touched[key];
-        }
-      });
-      window.s.linkTrackVars = previousLinkTrackVars;
-      window.s.linkTrackEvents = previousLinkTrackEvents;
-    };
-  }
-
-  function formatVariablePreview(config) {
-    const rows = [];
-    if (config.events) {
-      rows.push(`events=${config.events}`);
-    }
-    if (config.products) {
-      rows.push(`products=${config.products}`);
-    }
-    Object.keys(config.vars || {}).forEach((key) => {
-      rows.push(`${key}=${config.vars[key]}`);
-    });
-    return rows.join("; ");
-  }
-
   function trackAdobeLink(options) {
     const config = Object.assign({ linkType: "o", linkObject: true, detail: "" }, options);
-    const variablePreview = formatVariablePreview(config);
+    const variablePreview = "Measurement: TS | Event name + fixed scenario attributes; native commerce only for commerce fixtures";
     const entry = {
       detail: [config.detail, variablePreview].filter(Boolean).join(" | "),
       linkName: config.linkName,
@@ -134,19 +56,17 @@
       time: getTimestamp()
     };
 
-    const restoreVariables = applyAppMeasurementVariables(config);
-
     try {
-      if (window.s && typeof window.s.tl === "function") {
-        window.s.tl(config.linkObject, config.linkType, config.linkName);
-        entry.sent = true;
+      if (window.tsMeasurement) {
+        var state = window.tsMeasurement.track(config.linkName, {scenario: config.linkName, route: config.vars && config.vars.eVar40}, {pageView: config.linkName === 'spa_virtual_page_view',fixture:config,type:config.linkType});
+        entry.sent = state === 'sdk-called';
+        entry.reason = state;
       } else {
-        entry.reason = "window.s.tl unavailable";
+        entry.reason = "measurement adapter unavailable";
       }
     } catch (error) {
       entry.reason = error && error.message ? error.message : "tracking error";
-    } finally {
-      restoreVariables();
+
     }
 
     renderTrackingLog(entry);
@@ -215,15 +135,14 @@
 
   function getTransitionVars(transition, phase) {
     return {
-      campaign: transition.id,
       eVar120: transition.id,
       eVar121: transition.from,
       eVar122: transition.to,
       eVar123: transition.slot,
-      prop120: phase,
-      prop121: transition.from,
-      prop122: transition.to,
-      prop123: transition.slot
+      eVar160: phase,
+      eVar161: transition.from,
+      eVar162: transition.to,
+      eVar163: transition.slot
     };
   }
 

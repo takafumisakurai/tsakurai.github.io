@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/validation.css">
 
     <!-- Adobe Launch -->
-    <script src="//assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js" async></script>
+    <script src="/js/measurement.js"></script>
     <!-- End Adobe Launch -->
 </head>
 
@@ -93,8 +93,8 @@
                     linkType: 'o',
                     detail: source
                 });
-            } else if (window.s && typeof window.s.tl === 'function') {
-                window.s.tl(true, 'o', 'dogecoin_logo_button_click');
+            } else if (window.tsMeasurement) {
+                window.tsMeasurement.track('dogecoin_logo_button_click', {scenario:'dogecoin_logo_button_click'});
             }
         }
 
