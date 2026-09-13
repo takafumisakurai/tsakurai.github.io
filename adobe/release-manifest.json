@@ -1,0 +1,59 @@
+{
+  "measurementVersion": "2026-09-13.1",
+  "routingPolicy": "portfolio-production-only; samples and QA are isolated in Lab",
+  "productionRSID": "tsisakurai",
+  "labRSID": "egeo1xxtsakurailab",
+  "appMeasurementPages": [
+    "/",
+    "/index.html",
+    "/1.html",
+    "/2.html",
+    "/3.html",
+    "/4.html",
+    "/5.html",
+    "/customlink/custom_scroll.html",
+    "/Cookie/index.html",
+    "/login/index.html",
+    "/login/home.html",
+    "/pdf_embed/index.html",
+    "/pdf_embed/1.html",
+    "/misc/1.html",
+    "/misc/2.html",
+    "/misc/3.html",
+    "/docs/index.html",
+    "/sitemap_with_titles.html",
+    "/privacy.html",
+    "/404.html"
+  ],
+  "sourceSHA256": {
+    "js/measurement.js": "e369a1b303248f183dd0c56cd28d6d2797670b2cae533ca4df50b70c4bb8ce4a",
+    "js/lab-status.js": "d2bf837088e6b758d375d4033cc301ab2cefa2f00cc05159cf41d876536a3f8a",
+    "js/web-sdk-lab.js": "72b332dce663a3627dcd83080f89449851ee9438a15a91ed69ea812cea8ed726",
+    "adobe/analytics-tracker.js": "811a43b6c083a82629b7fa312a417d66713461a478a1a7f79142cb5a6ad28a42"
+  },
+  "launchLibraries": [
+    {
+      "environment": "production",
+      "url": "https://assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js",
+      "sha256": "a73008d043af754a7b3414da2bd209b2b6ed73311800ad28bb7ac9a08796c5d9",
+      "buildDate": "2026-09-13T05:47:25Z"
+    },
+    {
+      "environment": "development",
+      "url": "https://assets.adobedtm.com/ff8e968de530/5e835208803b/launch-ENda93a2d5c4c846e49f53c387a329297a-development.min.js",
+      "sha256": "e40430c63f797b0b3abbe2e156e9a852d48d207ab5dbf339756f9e063b7d3695",
+      "buildDate": "2026-09-13T05:27:13Z"
+    },
+    {
+      "environment": "staging",
+      "url": "https://assets.adobedtm.com/ff8e968de530/5e835208803b/launch-ENf5cd3a80d2b44148839cafa7cbe4bf51-staging.min.js",
+      "sha256": "4f665ad9f812bf7d20396c99869955dd449d1f2f2d687adb21a03588034a56e7",
+      "buildDate": "2026-09-13T05:41:24Z"
+    }
+  ],
+  "webSDK": {
+    "datastreamID": "e7f579e5-810e-4ca5-916d-2b9010378329",
+    "reportSuiteID": "egeo1xxtsakurailab"
+  },
+  "verificationLimits": "Source/SDK mocks/CDN hashes do not prove processed reporting. Record browser transport and Workspace evidence separately."
+}
