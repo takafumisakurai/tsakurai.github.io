@@ -138,7 +138,7 @@
     // Explicit diagnostics only; no IDs or cookies are shown. Failure must not block measurement.
     if (new URLSearchParams(location.search).get('ts_debug') === '1' && !w.tsTransportDebug) {
       var debug = d.createElement('script');
-      debug.src = '/js/measurement-debug.js?ts_release=' + VERSION; debug.onload = startLibrary; debug.onerror = startLibrary;
+      debug.src = '/js/measurement-debug.js?ts_release=' + VERSION + '.2'; debug.onload = startLibrary; debug.onerror = startLibrary;
       d.head.appendChild(debug);
     } else startLibrary();
   }
