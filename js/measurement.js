@@ -121,13 +121,25 @@
     if (started || !allowed()) return;
     started = true;
     w.targetGlobalSettings = Object.assign({}, w.targetGlobalSettings, {bodyHidingEnabled:false, timeout:1500});
-    var script = d.createElement('script');
-    script.src = /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
-      ? 'https://assets.adobedtm.com/ff8e968de530/5e835208803b/launch-ENda93a2d5c4c846e49f53c387a329297a-development.min.js'
-      : 'https://assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js';
-    script.async = true;
-    script.onerror = function () { queue = []; d.documentElement.dataset.measurementStatus = 'unavailable'; };
-    d.head.appendChild(script);
+    function startLibrary() {
+      var script = d.createElement('script');
+      var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+      var stage = new URLSearchParams(location.search).get('ts_stage');
+      script.src = local && stage === 'staging'
+        ? 'https://assets.adobedtm.com/ff8e968de530/5e835208803b/launch-ENf5cd3a80d2b44148839cafa7cbe4bf51-staging.min.js'
+        : local && stage !== 'production'
+          ? 'https://assets.adobedtm.com/ff8e968de530/5e835208803b/launch-ENda93a2d5c4c846e49f53c387a329297a-development.min.js'
+          : 'https://assets.adobedtm.com/launch-EN74cf41899d0d4c7b99abec483ec49ebc.min.js';
+      script.async = true;
+      script.onerror = function () { queue = []; d.documentElement.dataset.measurementStatus = 'unavailable'; };
+      d.head.appendChild(script);
+    }
+    // Explicit diagnostics only; no IDs or cookies are shown. Failure must not block measurement.
+    if (new URLSearchParams(location.search).get('ts_debug') === '1' && !w.tsTransportDebug) {
+      var debug = d.createElement('script');
+      debug.src = '/js/measurement-debug.js'; debug.onload = startLibrary; debug.onerror = startLibrary;
+      d.head.appendChild(debug);
+    } else startLibrary();
   }
   function setConsent(value) {
     if (!/^(granted|denied)$/.test(value)) return;

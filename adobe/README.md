@@ -61,3 +61,7 @@ The PDF SDK loads on explicit viewer action. Native auto-Analytics is disabled (
 - Serve the repository locally; localhost selects the development Launch library.
 
 Mock tests and a successful library build do not prove successful HTTP collection or processed reporting. Validate actual browser requests, payloads, response status, then the matching report suite and saved Workspace project before production release. Avoid adding unrelated unpublished resources to a Tags library.
+
+## Explicit transport diagnostics
+
+After consent, `?ts_debug=1` loads a first-party diagnostic panel on www.tsakurai.com or localhost only. It observes the existing SDK requests without generating tracking calls of its own. Only allowlisted measurement dimensions, fixed product fixtures, host/path and transport outcome are displayed. ECIDs, cookies and raw URLs are omitted; purchase IDs are replaced with a presence marker. Sanitized records are kept in sessionStorage for the current browser tab so exit-link debugging can survive navigation. `image-load-success` proves that the collection pixel loaded; `beacon-queued` only proves browser acceptance, and neither proves report processing. On localhost, `ts_stage=staging` or `ts_stage=production` selects the corresponding library; the hostname routing still sends these visits to the Lab suite.
