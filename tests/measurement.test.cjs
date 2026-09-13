@@ -4,14 +4,18 @@ const assert=require('node:assert/strict');
 function setup(path='/', search='', consent='granted',host='www.tsakurai.com',stage='production'){
  const callbacks={},timers=[],scripts=[],hits=[];
  const d={readyState:'loading',referrer:'https://example.org/path?secret=test#private',documentElement:{dataset:{}},addEventListener:(n,cb)=>callbacks[n]=cb,dispatchEvent:()=>{},getElementById:()=>null,createElement:()=>({}),head:{appendChild:e=>scripts.push(e)}};
+ function element(tag){return {tag,children:[],style:{},dataset:{},hidden:false,setAttribute(k,v){this[k]=v;},appendChild(child){this.children.push(child);if(tag==='head'&&child.src)scripts.push(child);return child;},insertBefore(child){this.children.unshift(child);},addEventListener(n,cb){this[n]=cb;},querySelector(){return this.children.find(e=>e.tag==='button');}};}
+ const main=element('main');d.head=element('head');d.body=element('body');d.body.appendChild(main);d.createElement=element;d.querySelector=selector=>selector==='main'?main:null;d.querySelectorAll=()=>[];d.visibilityState='visible';d.documentElement.scrollHeight=1200;
+ const find=(node,id)=>node.id===id?node:node.children.map(e=>find(e,id)).find(Boolean);d.getElementById=id=>find(d.body,id);
  const location={pathname:path,search,hostname:host,origin:'https://'+host,href:'https://'+host+path+search,reload:()=>{location.reloaded=true;}};
  const w={setTimeout:cb=>timers.push(cb),_satellite:{environment:{stage}}};
+ w.addEventListener=()=>{};w.setInterval=()=>1;w.clearInterval=()=>{};w.innerHeight=800;w.scrollY=0;
  const storage={getItem:()=>JSON.stringify({value:consent,expires:Date.now()+100000}),setItem:()=>{}};
  const scope={window:w,document:d,location,localStorage:storage,URL,URLSearchParams,CustomEvent:function(){},Date,Map,setTimeout:w.setTimeout,clearTimeout:()=>{},_satellite:w._satellite};
  vm.createContext(scope);vm.runInContext(readFileSync('js/measurement.js','utf8'),scope);
  const s={contextData:{},sa(id){this.account=id;},clearVars(){for(const key of Object.keys(this))if(/^(eVar|prop)\d+$|^(contextData|events|products|purchaseID|campaign|pageName|pageURL|channel)$/.test(key))delete this[key];this.contextData={};},t(){this.doPlugins(this);if(!this.abort)hits.push(JSON.parse(JSON.stringify({type:'page',...this})));},tl(o,type,name){this.doPlugins(this);if(!this.abort)hits.push(JSON.parse(JSON.stringify({type,name,...this})));}};
  scope.s=s;vm.runInContext(readFileSync('adobe/analytics-tracker.js','utf8'),scope);
- return {w,d,s,location,hits,scripts,flush:()=>{while(timers.length)timers.shift()();},start:()=>{w.tsMeasurement.connect(s);s.t();s.clearVars();}};
+ return {w,d,s,location,hits,scripts,ready:()=>callbacks.DOMContentLoaded(),rerun:()=>vm.runInContext(readFileSync('js/measurement.js','utf8'),scope),flush:()=>{while(timers.length)timers.shift()();},start:()=>{w.tsMeasurement.connect(s);s.t();s.clearVars();}};
 }
 let cases=0;
 function test(name,fn){fn();cases++;console.log('PASS '+name);}
@@ -26,3 +30,5 @@ test('virtual page navigation sends one page hit with route dimension',()=>{cons
 test('declining after consent blocks future sends and reloads SDK',()=>{const a=setup();a.start();a.flush();a.w.tsMeasurement.setConsent('denied');assert.equal(a.location.reloaded,true);assert.equal(a.w.tsMeasurement.track('email_click',{}),'consent-blocked');assert.equal(a.hits.length,1);});
 test('once-only scroll events do not double count',()=>{const a=setup();a.start();a.flush();for(let n=0;n<5;n++)a.w.tsMeasurement.track('scroll_depth',{depth:'50'},{once:'depth:50'});assert.equal(a.hits.length,2);assert.equal(a.hits[1].events,'event156');});
 console.log(`${cases} tests passed; mock SDK behavior only, not network/reporting proof.`);
+
+module.exports={setup};

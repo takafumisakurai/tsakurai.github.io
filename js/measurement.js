@@ -8,7 +8,7 @@
   var knownPaths = ['1.html','2.html','3.html','4.html','5.html','customlink/custom_scroll.html','Cookie/index.html','login/index.html','login/home.html','pdf_embed/index.html','pdf_embed/1.html','misc/1.html','misc/2.html','misc/3.html','docs/index.html','sitemap_with_titles.html','privacy.html'];
   var pathId = location.pathname.replace(/^\//, '');
   var pageId = portfolio ? 'portfolio' : knownPaths.indexOf(pathId) >= 0 ? pathId : 'not-found';
-  var consent = 'pending';
+  var consent = 'pending', lastEvent = '', lastResult = 'no-events';
   try {
     var saved = JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null');
     if (saved && saved.expires > Date.now() && /^(granted|denied)$/.test(saved.value)) consent = saved.value;
@@ -43,7 +43,13 @@
     return out;
   }
   w.adobeDataLayer = w.adobeDataLayer || [];
+  function statusChanged() { d.dispatchEvent(new CustomEvent('ts:measurement-status')); }
+  function statusSnapshot() {
+    var stage = w._satellite && w._satellite.environment ? w._satellite.environment.stage : '';
+    return {sdk:'AppMeasurement',rsid:tracker && /^(tsisakurai|egeo1xxtsakurailab)$/.test(tracker.account) ? tracker.account : '',expectedRSID:'egeo1xxtsakurailab',libraryEnvironment:stage || 'not-loaded',trafficGroup:'Lab / QA',consent:consent,event:lastEvent,result:lastResult,version:VERSION};
+  }
   function record(name, attrs) {
+    lastEvent = name; lastResult = 'queued';
     var data = { event: name, page: { id: pageId, group: portfolio ? 'portfolio' : 'lab' }, data: attrs, version: VERSION };
     w.adobeDataLayer.push(data);
     if (w.adobeDataLayer.length > 100) w.adobeDataLayer.splice(0, w.adobeDataLayer.length - 100);
@@ -97,9 +103,9 @@
         tracker.contextData['ts.virtual_route'] = hit.attrs['ts.route'] || '';
         tracker.t();
       } else tracker.tl(true, hit.type, 'ts:' + hit.name + (hit.attrs['ts.placement'] ? ':' + hit.attrs['ts.placement'] : ''));
-      return 'sdk-called';
-    } catch (_) { return 'sdk-error'; }
-    finally { tracker.clearVars(); tracker.linkTrackVars = 'None'; tracker.linkTrackEvents = 'None'; }
+      lastResult = 'sdk-called'; return 'sdk-called';
+    } catch (_) { lastResult = 'sdk-error'; return 'sdk-error'; }
+    finally { tracker.clearVars(); tracker.linkTrackVars = 'None'; tracker.linkTrackEvents = 'None'; statusChanged(); }
   }
   function connect(s) {
     if (tracker) return;
@@ -115,7 +121,7 @@
   function pageReady() {
     if (initialized) return;
     // doPlugins invokes this when the initial page hit is being built, not when variables are merely set.
-    w.setTimeout(function () { if(initialized)return;initialized=true;var pending=queue.splice(0);pending.forEach(transmit);d.dispatchEvent(new CustomEvent('ts:measurement-ready')); }, 0);
+    w.setTimeout(function () { if(initialized)return;initialized=true;lastResult='sdk-called';statusChanged();var pending=queue.splice(0);pending.forEach(transmit);d.dispatchEvent(new CustomEvent('ts:measurement-ready')); }, 0);
   }
   function loadLaunch() {
     if (started || !allowed()) return;
@@ -149,6 +155,8 @@
     queue = [];
     try { localStorage.setItem(CONSENT_KEY, JSON.stringify({value:value,expires:Date.now()+180*86400000})); } catch (_) {}
     d.documentElement.dataset.measurementConsent = consent;
+    if (consent === 'denied') lastResult = 'consent-blocked';
+    statusChanged();
     var banner = d.getElementById('measurement-consent');
     if (banner) banner.hidden = true;
     d.dispatchEvent(new CustomEvent('ts:consent-changed', {detail:{value:value}}));
@@ -221,7 +229,7 @@
     }
     w.addEventListener('scroll',inspect,{passive:true});w.addEventListener('resize',inspect);d.addEventListener('visibilitychange',inspect);d.addEventListener('ts:consent-changed',inspect);inspect();
   }
-  w.tsMeasurement = {version:VERSION,allowed:allowed,setConsent:setConsent,connect:connect,pageReady:pageReady,track:send,cleanURL:cleanURL};
-  function ready(){consentUI();interactions();loadLaunch();}
+  w.tsMeasurement = {version:VERSION,getStatus:statusSnapshot,allowed:allowed,setConsent:setConsent,connect:connect,pageReady:pageReady,track:send,cleanURL:cleanURL};
+  function ready(){consentUI();if(!portfolio && pageId !== 'privacy.html' && pageId !== 'not-found'){var lab=d.createElement('script');lab.src='/js/lab-status.js?v=20260913-1';d.head.appendChild(lab);}interactions();loadLaunch();}
   if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',ready,{once:true});else ready();
 })(window,document);

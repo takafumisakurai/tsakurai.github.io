@@ -38,4 +38,5 @@ d.getElementById('deny').addEventListener('click',function(){save('denied');stat
 d.getElementById('test').addEventListener('click',function(){send(true);});
 status(state==='granted'?'計測を許可済み':state==='denied'?'計測を停止しています':'同意前のため、Adobe SDKを読み込んでいません');
 if(state==='granted') start();
+w.tsWebSDKLabStatus={getStatus:function(){var row=logs[logs.length-1]||{};return {sdk:'Web SDK',rsid:ready?'egeo1xxtsakurailab':'',expectedRSID:'egeo1xxtsakurailab',libraryEnvironment:'standalone',trafficGroup:'Lab / QA',consent:state,event:row.event||(row.fields&&row.fields.eVar152)||'',result:row.status||'no-events',version:'2026-09-13.1',datastream:stream};}};
 })(window,document);

@@ -73,3 +73,13 @@ After consent, `?ts_debug=1` loads a first-party diagnostic panel on www.tsakura
 Automatic click collection and context collection are disabled. Fixed page view (`event151`) and button click (`event160`, custom link type `o`) use `data.__adobe.analytics`. All hits carry synthetic=true and environment=qa. The final callback strips any URL/referrer queries and prevents events after withdrawal. `?ts_debug=1` adds the sanitized HTTP transport diagnostic; successful Edge response does not prove processed reporting.
 
 Official references: https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/data-var-mapping and https://experienceleague.adobe.com/en/docs/experience-platform/collection/js/commands/setconsent
+
+## Release checks and Lab status
+
+Sample pages show a compact Lab badge with expandable, sanitized details. The portfolio and privacy pages do not load this panel. A called SDK is labelled as such; the panel never labels a call as a processed report. The privacy page remains available through the portfolio footer.
+
+Before publishing a site change, run `node tests/release-checks.cjs`, `node tests/web-sdk-lab.test.cjs`, `python3 tests/check-syntax.py`, and `node tests/verify-published-library.cjs`. The GitHub Actions workflow runs these on pull requests and pushes to master. Review the successful pull-request check before merging; the workflow alone is not a branch-protection rule and does not block a direct push to master.
+
+The release manifest records the reviewed source checksums, routing policy, Web SDK datastream, and all three published Launch builds. A changed Launch bundle fails the check until its new version has been reviewed. The workflow artifact records the exact tested site commit and matching Launch versions. Update source checksums and script URL hashes when a reviewed source file changes. Never accept a new checksum merely to silence a failed check.
+
+The automated checks cover all 20 AppMeasurement routes, production/QA/development/staging routing, initial page-view fields, consent denial, repeated initialization, and bootstrap cache hashes. These checks use a simulated SDK plus real CDN byte checks; they do not substitute for browser transport inspection and saved, reopened Workspace results. Keep the measurement verification matrix separate from the release pairing artifact.
