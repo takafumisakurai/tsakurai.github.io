@@ -3,7 +3,7 @@ const tick=()=>new Promise(r=>setImmediate(r));
 function setup(scenario='ab-manual',value='pending',late=false){
  const calls=[],scripts=[],els={},listeners={};
  for(const id of ['status','results','allow','deny','request','convert','target-primary','proposal-count','render-count','conversion-count','qa-state','segment','product'])els[id]={innerHTML:'default',value:id==='segment'?'alpha':'notebook',addEventListener(n,f){this[n]=f}};
- const proposition={id:'AT:test',scope:'tsakurai-lab-'+scenario,scopeDetails:{activity:{id:'test'}},items:[{schema:'https://ns.adobe.com/personalization/html-content',data:{content:'offer'}}]};
+ const proposition={id:'AT:test',scope:'tsakurai-lab-'+scenario,scopeDetails:{activity:{id:'test'}},items:[{schema:'https://ns.adobe.com/personalization/html-content-item',data:{content:'offer'}}]};
  let release;
  const sdk=(command,options)=>{calls.push({command,options});if(command==='sendEvent'&&options.decisionScopes)return late?new Promise(r=>release=()=>r({propositions:[proposition]})):Promise.resolve({propositions:[proposition]});if(command==='applyPropositions'){els['target-primary'].innerHTML='offer';return Promise.resolve({propositions:options.propositions})}return Promise.resolve({});};
  const w={addEventListener:(n,f)=>listeners[n]=f};

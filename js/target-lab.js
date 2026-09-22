@@ -34,7 +34,7 @@ function request(){
   el('proposal-count').textContent=String(props.length);log('decision-response',props.map(summary));
   if(scenario==='mvt'){displayed=props.filter(function(p){return p.renderAttempted;});return;}
   var metadata={};metadata[scope]={selector:'#target-primary',actionType:'setHtml'};if(secondary)metadata[scope+'-secondary']={selector:'#target-secondary',actionType:'setHtml'};
-  var htmlProps=props.filter(function(p){return (p.items||[]).some(function(i){return i.schema==='https://ns.adobe.com/personalization/html-content';});});
+  var htmlProps=props.filter(function(p){return (p.items||[]).some(function(i){return i.schema==='https://ns.adobe.com/personalization/html-content-item';});});
   if(!htmlProps.length)return;
   return w.alloy('applyPropositions',{propositions:htmlProps,metadata:metadata}).then(function(rendered){
    if(!allowed()||revision!==rev){reset();return;}
