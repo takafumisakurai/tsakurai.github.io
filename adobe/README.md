@@ -56,7 +56,7 @@ The PDF SDK loads on explicit viewer action. Native auto-Analytics is disabled (
 
 ## Local checks
 
-- `node tests/measurement.test.cjs`: nine focused mocked-SDK behavior tests.
+- `node tests/measurement.test.cjs`: 15 focused mocked-SDK behavior tests.
 - `python3 tests/check-syntax.py`: script syntax, including inline scripts.
 - Serve the repository locally; localhost selects the development Launch library.
 
@@ -83,3 +83,11 @@ Before publishing a site change, run `node tests/release-checks.cjs`, `node test
 The release manifest records the reviewed source checksums, routing policy, Web SDK datastream, and all three published Launch builds. A changed Launch bundle fails the check until its new version has been reviewed. The workflow artifact records the exact tested site commit and matching Launch versions. Update source checksums and script URL hashes when a reviewed source file changes. Never accept a new checksum merely to silence a failed check.
 
 The automated checks cover all 20 AppMeasurement routes, production/QA/development/staging routing, initial page-view fields, consent denial, repeated initialization, and bootstrap cache hashes. These checks use a simulated SDK plus real CDN byte checks; they do not substitute for browser transport inspection and saved, reopened Workspace results. Keep the measurement verification matrix separate from the release pairing artifact.
+
+## 2026-09-22 consent / QA maintenance
+
+The measurement schema remains 2026-09-13.1; the source content hashes identify this maintenance release. Consent changes are synchronized across tabs, and checked again before sending and when a page resumes. Withdrawal clears pending site events, aborts Analytics and reloads already-running AppMeasurement/Target/ECID pages. The standalone Web SDK Lab sets consent out and blocks outgoing events. Deferred SDK loads re-check consent.
+
+QA is stored per tab under `tsakurai.measurement-qa.v1`. Enter with `?ts_qa=1`; same-tab navigation retains QA and restores the query before published Tags conditions run. Use `?ts_qa=0` explicitly to leave QA. This also keeps the already-published Target condition compatible without publishing unrelated Tags changes. If URL restoration fails, Launch is not loaded. A fresh independent tab is not opted into QA.
+
+Reviewed development build 2026-09-19T10:44:15Z: automatic download and exit link tracking are false in extension settings; redundant download file types and internal-filter extension values are removed. The existing custom setup still disables automatic links and sets internal filters. Production/staging unchanged. The external custom-code action remains empty in both bundles; only its generated URL changes. The manifest records the re-fetched, reviewed bytes.
