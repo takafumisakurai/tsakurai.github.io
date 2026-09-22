@@ -26,9 +26,9 @@
     "/404.html"
   ],
   "sourceSHA256": {
-    "js/measurement.js": "e369a1b303248f183dd0c56cd28d6d2797670b2cae533ca4df50b70c4bb8ce4a",
+    "js/measurement.js": "809467384310b7e0565996da8a1a9434e17c595a0a27aa9cd882c0e0fdedfc88",
     "js/lab-status.js": "d2bf837088e6b758d375d4033cc301ab2cefa2f00cc05159cf41d876536a3f8a",
-    "js/web-sdk-lab.js": "72b332dce663a3627dcd83080f89449851ee9438a15a91ed69ea812cea8ed726",
+    "js/web-sdk-lab.js": "6fc9e078117cc997d035d9c80227f09d29a264fbdb01d10a81fc753a2489a25d",
     "adobe/analytics-tracker.js": "811a43b6c083a82629b7fa312a417d66713461a478a1a7f79142cb5a6ad28a42"
   },
   "launchLibraries": [
@@ -41,8 +41,8 @@
     {
       "environment": "development",
       "url": "https://assets.adobedtm.com/ff8e968de530/5e835208803b/launch-ENda93a2d5c4c846e49f53c387a329297a-development.min.js",
-      "sha256": "e40430c63f797b0b3abbe2e156e9a852d48d207ab5dbf339756f9e063b7d3695",
-      "buildDate": "2026-09-13T05:27:13Z"
+      "sha256": "5bd1052ca5a3aeb716734b4c8c45868785b8a90a85a917b6f4c33c42e9676279",
+      "buildDate": "2026-09-19T10:44:15Z"
     },
     {
       "environment": "staging",

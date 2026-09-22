@@ -3,17 +3,51 @@
   if (w.tsMeasurement) return;
   var VERSION = '2026-09-13.1';
   var CONSENT_KEY = 'tsakurai.measurement-consent.v1';
-  var tracker = null, started = false, initialized = false, queue = [], seen = Object.create(null);
+  var tracker = null, started = false, domReady = false, initialized = false, queue = [], seen = Object.create(null);
   var portfolio = /^(\/|\/index\.html)$/.test(location.pathname);
   var knownPaths = ['1.html','2.html','3.html','4.html','5.html','customlink/custom_scroll.html','Cookie/index.html','login/index.html','login/home.html','pdf_embed/index.html','pdf_embed/1.html','misc/1.html','misc/2.html','misc/3.html','docs/index.html','sitemap_with_titles.html','privacy.html'];
   var pathId = location.pathname.replace(/^\//, '');
   var pageId = portfolio ? 'portfolio' : knownPaths.indexOf(pathId) >= 0 ? pathId : 'not-found';
-  var consent = 'pending', lastEvent = '', lastResult = 'no-events';
+  // Keep QA scoped to this tab; mirror it into the URL before the existing Tags
+  // Analytics and Target conditions read ts_qa. Only an explicit ts_qa=0 exits QA.
+  var QA_KEY = 'tsakurai.measurement-qa.v1';
+  var qaParam = new URLSearchParams(location.search).get('ts_qa');
+  var qa = qaParam === '1', qaURLReady = true;
   try {
-    var saved = JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null');
-    if (saved && saved.expires > Date.now() && /^(granted|denied)$/.test(saved.value)) consent = saved.value;
-  } catch (_) { /* Unavailable storage keeps the visitor in control on this page. */ }
-  function allowed() { return consent === 'granted'; }
+    if (qaParam === '0') w.sessionStorage.removeItem(QA_KEY);
+    else if (qa) w.sessionStorage.setItem(QA_KEY, '1');
+    else qa = w.sessionStorage.getItem(QA_KEY) === '1';
+  } catch (_) { /* Explicit QA still works if session storage is unavailable. */ }
+  if (qa && qaParam !== '1') {
+    try {
+      var qaURL = new URL(location.href); qaURL.searchParams.set('ts_qa', '1');
+      w.history.replaceState(w.history.state, '', qaURL.href);
+    } catch (_) { qaURLReady = false; } // Fail closed rather than load production Target.
+  }
+  var consent = 'pending', consentExpires = 0, lastEvent = '', lastResult = 'no-events';
+  function readConsent() {
+    var raw;
+    try { raw = localStorage.getItem(CONSENT_KEY); } catch (_) { return null; }
+    try {
+      var saved = JSON.parse(raw || 'null');
+      return saved && saved.expires > Date.now() && /^(granted|denied)$/.test(saved.value)
+        ? saved : {value:'pending', expires:0};
+    } catch (_) { return {value:'pending',expires:0}; }
+  }
+  var saved = readConsent();
+  if (saved) { consent = saved.value; consentExpires = saved.expires; }
+  function syncConsent() {
+    var current = readConsent();
+    if (!current && consentExpires && consentExpires <= Date.now()) current = {value:'pending',expires:0};
+    if (current && (current.value !== consent || current.expires !== consentExpires)) applyConsent(current.value, current.expires);
+  }
+  function allowed() { syncConsent(); return consent === 'granted'; }
+  w.addEventListener('storage', function(event) {
+    if (event.key === CONSENT_KEY || event.key === null) syncConsent();
+  });
+  w.addEventListener('pageshow', syncConsent);
+  w.addEventListener('focus', syncConsent);
+  d.addEventListener('visibilitychange', syncConsent);
   function token(value) { return typeof value === 'string' && /^[a-zA-Z0-9_./:-]{1,100}$/.test(value) ? value : ''; }
   function cleanURL(value) {
     try { var url = new URL(value, location.href); return /^https?:$/.test(url.protocol) ? url.origin + url.pathname : ''; }
@@ -21,8 +55,8 @@
   }
   function base() {
     return { 'ts.page_id': pageId, 'ts.page_group': portfolio ? 'portfolio' : 'lab',
-      'ts.synthetic': portfolio && location.hostname === 'www.tsakurai.com' && new URLSearchParams(location.search).get('ts_qa') !== '1' && w._satellite && w._satellite.environment.stage === 'production' ? 'false' : 'true', 'ts.measurement_version': VERSION,
-      'ts.environment': new URLSearchParams(location.search).get('ts_qa') === '1' ? 'qa' : w._satellite && w._satellite.environment ? w._satellite.environment.stage : 'development',
+      'ts.synthetic': portfolio && location.hostname === 'www.tsakurai.com' && !qa && w._satellite && w._satellite.environment.stage === 'production' ? 'false' : 'true', 'ts.measurement_version': VERSION,
+      'ts.environment': qa ? 'qa' : w._satellite && w._satellite.environment ? w._satellite.environment.stage : 'development',
       'ts.consent': 'granted' };
   }
   var dimensionMap = {151:'page_group',152:'event_name',153:'section',154:'placement',155:'destination',156:'depth',157:'measurement_version',158:'synthetic',159:'document_id',160:'route',161:'environment',162:'pdf_event'};
@@ -108,7 +142,7 @@
     finally { tracker.clearVars(); tracker.linkTrackVars = 'None'; tracker.linkTrackEvents = 'None'; statusChanged(); }
   }
   function connect(s) {
-    if (tracker) return;
+    if (tracker || !allowed()) return;
     tracker = s;
     tracker.contextData = Object.assign(base(), {'ts.event_name':'page_view'});
     mapVariables('page_view');
@@ -124,10 +158,11 @@
     w.setTimeout(function () { if(initialized)return;initialized=true;lastResult='sdk-called';statusChanged();var pending=queue.splice(0);pending.forEach(transmit);d.dispatchEvent(new CustomEvent('ts:measurement-ready')); }, 0);
   }
   function loadLaunch() {
-    if (started || !allowed()) return;
+    if (started || !allowed() || !qaURLReady) return;
     started = true;
     w.targetGlobalSettings = Object.assign({}, w.targetGlobalSettings, {bodyHidingEnabled:false, timeout:1500});
     function startLibrary() {
+      if (!allowed()) return;
       var script = d.createElement('script');
       var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
       var stage = new URLSearchParams(location.search).get('ts_stage');
@@ -148,22 +183,29 @@
       d.head.appendChild(debug);
     } else startLibrary();
   }
-  function setConsent(value) {
-    if (!/^(granted|denied)$/.test(value)) return;
-    var withdrawing = consent === 'granted' && value === 'denied';
-    consent = value;
-    queue = [];
-    try { localStorage.setItem(CONSENT_KEY, JSON.stringify({value:value,expires:Date.now()+180*86400000})); } catch (_) {}
+  function applyConsent(value, expires) {
+    var withdrawing = consent === 'granted' && value !== 'granted';
+    consent = value; consentExpires = expires; queue = [];
+    if (value !== 'granted') {
+      lastResult = 'consent-blocked';
+      w.adobeDataLayer.length = 0;
+      if (tracker) { tracker.abort = true; tracker.clearVars(); }
+    } else if (tracker) tracker.abort = false;
     d.documentElement.dataset.measurementConsent = consent;
-    if (consent === 'denied') lastResult = 'consent-blocked';
     statusChanged();
     var banner = d.getElementById('measurement-consent');
-    if (banner) banner.hidden = true;
+    if (banner) banner.hidden = value !== 'pending';
     d.dispatchEvent(new CustomEvent('ts:consent-changed', {detail:{value:value}}));
-    if (withdrawing) {
-      // A reload also stops already loaded Target/ECID code; the denied preference survives it.
+    if (withdrawing && (started || tracker)) {
+      // Stop Target/ECID as well as Analytics in every already-running tab.
       location.reload();
-    } else loadLaunch();
+    } else if (value === 'granted' && domReady) loadLaunch();
+  }
+  function setConsent(value) {
+    if (!/^(granted|denied)$/.test(value)) return;
+    var expires = Date.now()+180*86400000;
+    try { localStorage.setItem(CONSENT_KEY, JSON.stringify({value:value,expires:expires})); } catch (_) {}
+    applyConsent(value, expires);
   }
   function consentUI() {
     var style = d.createElement('style');
@@ -230,6 +272,6 @@
     w.addEventListener('scroll',inspect,{passive:true});w.addEventListener('resize',inspect);d.addEventListener('visibilitychange',inspect);d.addEventListener('ts:consent-changed',inspect);inspect();
   }
   w.tsMeasurement = {version:VERSION,getStatus:statusSnapshot,allowed:allowed,setConsent:setConsent,connect:connect,pageReady:pageReady,track:send,cleanURL:cleanURL};
-  function ready(){consentUI();if(!portfolio && pageId !== 'privacy.html' && pageId !== 'not-found'){var lab=d.createElement('script');lab.src='/js/lab-status.js?v=20260913-1';d.head.appendChild(lab);}interactions();loadLaunch();}
+  function ready(){domReady=true;consentUI();if(!portfolio && pageId !== 'privacy.html' && pageId !== 'not-found'){var lab=d.createElement('script');lab.src='/js/lab-status.js?v=20260913-1';d.head.appendChild(lab);}interactions();loadLaunch();}
   if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',ready,{once:true});else ready();
 })(window,document);
