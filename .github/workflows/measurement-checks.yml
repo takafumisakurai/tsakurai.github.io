@@ -23,6 +23,8 @@ jobs:
         run: node tests/release-checks.cjs
       - name: Isolated Web SDK behavior
         run: node tests/web-sdk-lab.test.cjs
+      - name: Target Lab consent and delivery behavior
+        run: node tests/target-lab.test.cjs
       - name: JavaScript syntax
         run: python3 tests/check-syntax.py
       - name: Verify published Launch and record site / library pairing
