@@ -19,7 +19,7 @@ function consent(value){return w.alloy('setConsent',{consent:[{standard:'Adobe',
 function reset(){displayed=[];primary.innerHTML=original;if(secondary)secondary.innerHTML=originalSecondary;el('proposal-count').textContent='0';el('render-count').textContent='0';controls();}
 function applyConsent(value,until){state=value;expires=until;revision++;reset();status(value==='granted'?'計測を許可しました':'計測を停止しました');if(configured){consent(value==='granted'?'in':'out').then(function(){if(allowed())request();}).catch(function(){status('同意設定を確認できません。再読み込みしてください。');});}else if(value==='granted')start();}
 function save(value){var until=Date.now()+180*86400000;try{localStorage.setItem(KEY,JSON.stringify({value:value,expires:until}));}catch(_){}applyConsent(value,until);}
-function clean(value){try{var url=new URL(value,location.href);return /^https?:$/.test(url.protocol)?url.origin+url.pathname:'';}catch(_){return '';}}
+function clean(value){try{var url=new URL(value,location.href);if(!/^https?:$/.test(url.protocol))return '';var qa=new URLSearchParams();['at_preview_token','at_preview_index','at_preview_listed_activities_only','at_preview_evaluate_as_true_audience_ids','at_qa_mode'].forEach(function(key){if(url.searchParams.has(key))qa.set(key,url.searchParams.get(key));});return url.origin+url.pathname+(qa.toString()?'?'+qa.toString():'');}catch(_){return '';}}
 function sanitize(content){if(!allowed())return false;var web=content.xdm&&content.xdm.web;if(web&&web.webPageDetails)web.webPageDetails.URL=clean(web.webPageDetails.URL);if(web&&web.webReferrer)web.webReferrer.URL='';return true;}
 function xdm(){return {web:{webPageDetails:{URL:clean(location.href),name:'tsakurai:lab:target:'+scenario,siteSection:scenario==='xt'?el('segment').value:'target-lab'},webReferrer:{URL:''}}};}
 function targetData(){var params={};if(scenario==='recommendations'){var id=el('product').value,names={notebook:'Lab Notebook',mug:'Lab Mug',bag:'Lab Bag',pen:'Lab Pen'};if(!names[id])id='notebook';params={'entity.id':'ts-lab-'+id,'entity.name':names[id],'entity.categoryId':'tsakurai-target-lab','entity.pageUrl':location.origin+'/lab/target/recommendations.html','entity.value':'100','entity.inventory':'100','entity.brand':'SignalScope Lab','entity.message':'Validation item'};}return {__adobe:{target:params}};}
@@ -34,7 +34,7 @@ function request(){
   el('proposal-count').textContent=String(props.length);log('decision-response',props.map(summary));
   if(scenario==='mvt'){displayed=props.filter(function(p){return p.renderAttempted;});return;}
   var metadata={};metadata[scope]={selector:'#target-primary',actionType:'setHtml'};if(secondary)metadata[scope+'-secondary']={selector:'#target-secondary',actionType:'setHtml'};
-  var htmlProps=props.filter(function(p){return (p.items||[]).some(function(i){return i.schema==='https://ns.adobe.com/personalization/html-content';});});
+  var htmlProps=props.filter(function(p){return (p.items||[]).some(function(i){return i.schema==='https://ns.adobe.com/personalization/html-content-item';});});
   if(!htmlProps.length)return;
   return w.alloy('applyPropositions',{propositions:htmlProps,metadata:metadata}).then(function(rendered){
    if(!allowed()||revision!==rev){reset();return;}
@@ -58,6 +58,6 @@ function start(){
 }
 w.addEventListener('storage',function(e){if(e.key===KEY||e.key===null)sync();});w.addEventListener('pageshow',sync);w.addEventListener('focus',sync);d.addEventListener('visibilitychange',sync);
 el('allow').addEventListener('click',function(){save('granted');});el('deny').addEventListener('click',function(){save('denied');});el('request').addEventListener('click',request);el('convert').addEventListener('click',convert);
-var params=new URLSearchParams(location.search);el('qa-state').textContent=params.get('at_qa_mode')?'Target Activity QAの指定を検出しました。QAレポートで確認してください。':'通常配信モード。以前のQA状態が続く場合は「Target QAを終了」を使ってください。';
+var params=new URLSearchParams(location.search);el('qa-state').textContent=(params.get('at_preview_token')||params.get('at_qa_mode'))?'Target Activity QAの指定を検出しました。QAレポートで確認してください。':'通常配信モード。以前のQA状態が続く場合は「Target QAを終了」を使ってください。';
 var c=read();if(c){state=c.value;expires=c.expires;}status(state==='granted'?'計測を許可済み':state==='denied'?'計測を拒否しています':'同意前のため、Adobe SDKを読み込んでいません');if(state==='granted')start();
 })(window,document);

@@ -1,15 +1,15 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const tick=()=>new Promise(r=>setImmediate(r));
-function setup(scenario='ab-manual',value='pending',late=false){
+function setup(scenario='ab-manual',value='pending',late=false,query='?private=secret'){
  const calls=[],scripts=[],els={},listeners={};
  for(const id of ['status','results','allow','deny','request','convert','target-primary','proposal-count','render-count','conversion-count','qa-state','segment','product'])els[id]={innerHTML:'default',value:id==='segment'?'alpha':'notebook',addEventListener(n,f){this[n]=f}};
- const proposition={id:'AT:test',scope:'tsakurai-lab-'+scenario,scopeDetails:{activity:{id:'test'}},items:[{schema:'https://ns.adobe.com/personalization/html-content',data:{content:'offer'}}]};
+ const proposition={id:'AT:test',scope:'tsakurai-lab-'+scenario,scopeDetails:{activity:{id:'test'}},items:[{schema:'https://ns.adobe.com/personalization/html-content-item',data:{content:'offer'}}]};
  let release;
  const sdk=(command,options)=>{calls.push({command,options});if(command==='sendEvent'&&options.decisionScopes)return late?new Promise(r=>release=()=>r({propositions:[proposition]})):Promise.resolve({propositions:[proposition]});if(command==='applyPropositions'){els['target-primary'].innerHTML='offer';return Promise.resolve({propositions:options.propositions})}return Promise.resolve({});};
  const w={addEventListener:(n,f)=>listeners[n]=f};
  const d={querySelector:()=>({dataset:{scenario}}),getElementById:id=>els[id]||null,addEventListener:(n,f)=>listeners[n]=f,createElement:()=>({}),head:{appendChild(s){scripts.push(s.src);w.alloy=sdk;s.onload()}}};
  const localStorage={value:JSON.stringify({value,expires:Date.now()+100000}),getItem(){return this.value},setItem(k,v){this.value=v}};
- const location={href:`https://www.tsakurai.com/lab/target/${scenario}.html?private=secret`,origin:'https://www.tsakurai.com',search:'?private=secret'};
+ const location={href:`https://www.tsakurai.com/lab/target/${scenario}.html${query}`,origin:'https://www.tsakurai.com',search:query};
  vm.runInNewContext(fs.readFileSync('js/target-lab.js','utf8'),{window:w,document:d,localStorage,location,Date,URL,URLSearchParams,Promise});
  return {calls,scripts,els,listeners,localStorage,release:()=>release()};
 }
@@ -24,6 +24,10 @@ function setup(scenario='ab-manual',value='pending',late=false){
  const race=setup('ab-manual','granted',true);await tick();race.els.deny.click();race.release();await tick();assert.equal(race.calls.filter(c=>c.command==='applyPropositions').length,0);assert.equal(race.els['target-primary'].innerHTML,'default');
  const xt=setup('xt','granted');await tick();assert.equal(xt.calls.find(c=>c.command==='sendEvent').options.xdm.web.webPageDetails.siteSection,'alpha');
  const rec=setup('recommendations','granted');await tick();assert.equal(rec.calls.find(c=>c.command==='sendEvent').options.data.__adobe.target['entity.id'],'ts-lab-notebook');
+ const qa=setup('ab-manual','granted',false,'?private=secret&at_preview_token=test-token&at_preview_index=1_2&at_preview_listed_activities_only=true');await tick();
+ const qaEvent=qa.calls.find(c=>c.command==='sendEvent').options;qa.calls[0].options.onBeforeEventSend(qaEvent);
+ assert.equal(new URL(qaEvent.xdm.web.webPageDetails.URL).searchParams.get('at_preview_token'),'test-token');assert.equal(new URL(qaEvent.xdm.web.webPageDetails.URL).searchParams.get('at_preview_index'),'1_2');assert.ok(!JSON.stringify(qa.calls).includes('secret'));assert.ok(qa.els['qa-state'].textContent.includes('QAの指定'));
+ const exit=setup('ab-manual','granted',false,'?at_qa_mode=&private=secret');await tick();assert.equal(new URL(exit.calls.find(c=>c.command==='sendEvent').options.xdm.web.webPageDetails.URL).search,'?at_qa_mode=');
  for(const file of fs.readdirSync('lab/target').filter(f=>f.endsWith('.html'))){const html=fs.readFileSync('lab/target/'+file,'utf8');assert.ok(html.includes('noindex,nofollow'));assert.ok(!/measurement\.js|launch-|AppMeasurement/.test(html));}
  console.log('PASS Target Lab: consent, isolated routing, render-before-display, conversion scope, cross-tab withdrawal, delayed-response withdrawal, XT, Recommendations and page isolation');
 })().catch(e=>{console.error(e);process.exitCode=1});
