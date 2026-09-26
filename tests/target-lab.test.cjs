@@ -1,9 +1,9 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const tick=()=>new Promise(r=>setImmediate(r));
-function setup(scenario='ab-manual',value='pending',late=false,query='?private=secret'){
+function setup(scenario='ab-manual',value='pending',late=false,query='?private=secret',schema='html-content-item'){
  const calls=[],scripts=[],els={},listeners={};
  for(const id of ['status','results','allow','deny','request','convert','target-primary','proposal-count','render-count','conversion-count','qa-state','segment','product'])els[id]={innerHTML:'default',value:id==='segment'?'alpha':'notebook',addEventListener(n,f){this[n]=f}};
- const proposition={id:'AT:test',scope:'tsakurai-lab-'+scenario,scopeDetails:{activity:{id:'test'}},items:[{schema:'https://ns.adobe.com/personalization/html-content-item',data:{content:'offer'}}]};
+ const proposition={id:'AT:test',scope:'tsakurai-lab-'+scenario,scopeDetails:{activity:{id:'test'}},items:[{schema:'https://ns.adobe.com/personalization/'+schema,data:{content:'offer'}}]};
  let release;
  const sdk=(command,options)=>{calls.push({command,options});if(command==='sendEvent'&&options.decisionScopes)return late?new Promise(r=>release=()=>r({propositions:[proposition]})):Promise.resolve({propositions:[proposition]});if(command==='applyPropositions'){els['target-primary'].innerHTML='offer';return Promise.resolve({propositions:options.propositions})}return Promise.resolve({});};
  const w={addEventListener:(n,f)=>listeners[n]=f};
@@ -24,6 +24,8 @@ function setup(scenario='ab-manual',value='pending',late=false,query='?private=s
  const race=setup('ab-manual','granted',true);await tick();race.els.deny.click();race.release();await tick();assert.equal(race.calls.filter(c=>c.command==='applyPropositions').length,0);assert.equal(race.els['target-primary'].innerHTML,'default');
  const xt=setup('xt','granted');await tick();assert.equal(xt.calls.find(c=>c.command==='sendEvent').options.xdm.web.webPageDetails.siteSection,'alpha');
  const rec=setup('recommendations','granted');await tick();assert.equal(rec.calls.find(c=>c.command==='sendEvent').options.data.__adobe.target['entity.id'],'ts-lab-notebook');
+ const control=setup('recommendations','granted',false,'','default-content-item');await tick();assert.equal(control.els['target-primary'].innerHTML,'default');assert.equal(control.calls.filter(c=>c.command==='applyPropositions').length,0);assert.equal(control.calls.at(-1).options.xdm._experience.decisioning.propositions[0].scope,'tsakurai-lab-recommendations');assert.equal(control.els.convert.disabled,false);control.els.convert.click();await tick();assert.equal(control.calls.at(-1).options.xdm._experience.decisioning.propositions[0].scope,'tsakurai-lab-recommendations-conversion');
+ const unknown=setup('recommendations','granted',false,'','unknown-item');await tick();assert.equal(unknown.els.convert.disabled,true);assert.equal(unknown.calls.filter(c=>c.command==='sendEvent').length,1);
  const qa=setup('ab-manual','granted',false,'?private=secret&at_preview_token=test-token&at_preview_index=1_2&at_preview_listed_activities_only=true');await tick();
  const qaEvent=qa.calls.find(c=>c.command==='sendEvent').options;qa.calls[0].options.onBeforeEventSend(qaEvent);
  assert.equal(new URL(qaEvent.xdm.web.webPageDetails.URL).searchParams.get('at_preview_token'),'test-token');assert.equal(new URL(qaEvent.xdm.web.webPageDetails.URL).searchParams.get('at_preview_index'),'1_2');assert.ok(!JSON.stringify(qa.calls).includes('secret'));assert.ok(qa.els['qa-state'].textContent.includes('QAの指定'));

@@ -35,10 +35,13 @@ function request(){
   if(scenario==='mvt'){displayed=props.filter(function(p){return p.renderAttempted;});return;}
   var metadata={};metadata[scope]={selector:'#target-primary',actionType:'setHtml'};if(secondary)metadata[scope+'-secondary']={selector:'#target-secondary',actionType:'setHtml'};
   var htmlProps=props.filter(function(p){return (p.items||[]).some(function(i){return i.schema==='https://ns.adobe.com/personalization/html-content-item';});});
-  if(!htmlProps.length)return;
-  return w.alloy('applyPropositions',{propositions:htmlProps,metadata:metadata}).then(function(rendered){
+  var defaultProps=props.filter(function(p){return (p.items||[]).length>0&&(p.items||[]).every(function(i){return i.schema==='https://ns.adobe.com/personalization/default-content-item';});});
+  if(!htmlProps.length&&!defaultProps.length)return;
+  // A control assignment intentionally keeps the reset default DOM, but still needs a display notification.
+  var rendering=htmlProps.length?w.alloy('applyPropositions',{propositions:htmlProps,metadata:metadata}):Promise.resolve({propositions:[]});
+  return rendering.then(function(rendered){
    if(!allowed()||revision!==rev){reset();return;}
-   displayed=rendered.propositions||[];
+   displayed=(rendered.propositions||[]).concat(defaultProps);
    // applyPropositions returns only the propositions it rendered. Notify display after rendering completes.
    if(displayed.length)return w.alloy('sendEvent',{xdm:displayXdm(displayed)}).then(function(){log('display-notification-success',{count:displayed.length});});
   });
